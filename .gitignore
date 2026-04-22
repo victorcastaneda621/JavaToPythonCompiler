@@ -1,4 +1,1 @@
-*.java
-*.out
-*.expected
 __pycache__/*
