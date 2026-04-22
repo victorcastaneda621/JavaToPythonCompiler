@@ -1,0 +1,2 @@
+class JavaParser():
+    pass
