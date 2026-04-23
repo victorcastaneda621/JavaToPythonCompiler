@@ -3,25 +3,54 @@ from sly import Lexer
 class JavaLexer(Lexer):
 
     tokens = {
-        ID, RETURN,
+        ID, RETURN, CLASS, STATIC,
         ELSE, IF, TRUE, FALSE, AND, OR, EQEQ,
         PLUSEQ, MINUSEQ, TIMESEQ, DIVEQ, MODEQ,
         INT_CONST, FLOAT_CONST,
         PLUSPLUS, MINUSMINUS,
-        LE, LT, GE, GT
+        PUBLIC, PRIVATE, VOID, NULL,
+        LE, LT, GE, GT, NEQ, NOT,
+        INLINE_COMMENT, MULTILINE_COMMENT, JAVADOC, STRING, CHAR,
+        SHORT, INT, LONG, BOOLEAN, FLOAT, DOUBLE,
+        FOR, WHILE, DO
     }
 
-    literals = {';', '=', '(', ')', '{', '}', '+', '-', '*', '/', '%', ','}
+    literals = {';', '=', '(', ')', '{', '}', '+', '-', '*', '/', '%', ',', '.', '[', ']'}
 
     ignore = ' \t'
 
     keywords = {
-                "return",
+                "return", "class", "static",
                 "else", "if", "true", "false",
                 "short", "int", "long", "boolean", "float", "double",
-                "public", "private", "void",
+                "public", "private", "void", "null",
                 "for", "while", "do"
                 }
+    
+    @_(r'\"(.*?)\"')
+    def STRING(self, t):
+        t.type = "STRING"
+        return t
+    
+    @_(r'\'.\'')
+    def CHAR(self, t):
+        t.type = "CHAR"
+        return t
+    
+    @_(r'//.*')
+    def INLINE_COMMENT(self, t):
+        t.type = "INLINE_COMMENT"
+        return t
+
+    @_(r'/\*\*[\s\S]*?\*/')
+    def JAVADOC(self, t):
+        t.type = "JAVADOC"
+        return t
+    
+    @_(r'/\*[\s\S]*?(\*/|$)')
+    def MULTILINE_COMMENT(self, t):
+        self.lineno += t.value.count('\n')
+        return t
     
     @_(r'&&')
     def AND(self, t):
@@ -92,6 +121,16 @@ class JavaLexer(Lexer):
     def GT(self, t):
         t.type = "GT"
         return t
+    
+    @_(r'!=')
+    def NEQ(self, t):
+        t.type = "NEQ"
+        return t
+    
+    @_(r'!')
+    def NOT(self, t):
+        t.type = "NOT"
+        return t
 
     @_(r'[0-9]+\.[0-9]+f?')
     def FLOAT_CONST(self, t):
@@ -130,15 +169,6 @@ class JavaLexer(Lexer):
             yield t
             self.begin(JavaLexer) 
 
-        elif self.__class__.__name__ == 'Comentario':
-            class EOFToken: pass
-            t = EOFToken()
-            t.type = "ERROR"
-            t.value = '"EOF in comment"'
-            t.lineno = self.lineno
-            yield t
-            self.begin(JavaLexer)
-
     def tokenize(self, text):
         list_strings = []
         for token in self.handle_eof(text): 
@@ -148,7 +178,7 @@ class JavaLexer(Lexer):
                 result += f"{token.value}"
             elif token.type in self.literals:
                 result = f'#{token.lineno} \'{token.type}\' '
-            elif token.type == 'STRING':
+            elif token.type in ['STRING', 'INLINE_COMMENT', 'MULTILINE_COMMENT', 'JAVADOC']:
                 result += token.value
             elif token.type in ['INT_CONST', 'FLOAT_CONST']:
                 result += str(token.value)
