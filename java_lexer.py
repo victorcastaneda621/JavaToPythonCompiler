@@ -4,18 +4,23 @@ class JavaLexer(Lexer):
 
     tokens = {
         ID, RETURN,
-        ELSE, IF, TRUE, FALSE, AND, OR,
+        ELSE, IF, TRUE, FALSE, AND, OR, EQEQ,
+        PLUSEQ, MINUSEQ, TIMESEQ, DIVEQ, MODEQ,
         INT_CONST, FLOAT_CONST,
+        PLUSPLUS, MINUSMINUS,
+        LE, LT, GE, GT
     }
 
-    literals = {';', '=', '(', ')', '{', '}'}
+    literals = {';', '=', '(', ')', '{', '}', '+', '-', '*', '/', '%', ','}
 
     ignore = ' \t'
 
     keywords = {
                 "return",
                 "else", "if", "true", "false",
-                "short", "int", "long", "boolean", "float", "double"
+                "short", "int", "long", "boolean", "float", "double",
+                "public", "private", "void",
+                "for", "while", "do"
                 }
     
     @_(r'&&')
@@ -26,6 +31,66 @@ class JavaLexer(Lexer):
     @_(r'\|\|')
     def OR(self, t):
         t.type = "OR"
+        return t
+    
+    @_(r'==')
+    def EQEQ(self, t):
+        t.type = "EQEQ"
+        return t
+    
+    @_(r'\+=')
+    def PLUSEQ(self, t):
+        t.type = "PLUSEQ"
+        return t
+    
+    @_(r'-=')
+    def MINUSEQ(self, t):
+        t.type = "MINUSEQ"
+        return t
+    
+    @_(r'\*=')
+    def TIMESEQ(self, t):
+        t.type = "TIMESEQ"
+        return t
+    
+    @_(r'/=')
+    def DIVEQ(self, t):
+        t.type = "DIVEQ"
+        return t
+    
+    @_(r'%=')
+    def MODEQ(self, t):
+        t.type = "MODEQ"
+        return t
+    
+    @_(r'\+\+')
+    def PLUSPLUS(self, t):
+        t.type = "PLUSPLUS"
+        return t
+    
+    @_(r'--')
+    def MINUSMINUS(self, t):
+        t.type = "MINUSMINUS"
+        return t
+    
+    @_(r'<=')
+    def LE(self, t):
+        t.type = "LE"
+        return t
+    
+    @_(r'<')
+    def LT(self, t):
+        t.type = "LT"
+        return t
+    
+    @_(r'>=')
+    def GE(self, t):
+        t.type = "GE"
+        return t
+    
+    @_(r'>')
+    def GT(self, t):
+        t.type = "GT"
         return t
 
     @_(r'[0-9]+\.[0-9]+f?')
@@ -50,7 +115,7 @@ class JavaLexer(Lexer):
         t.type = 'ERROR'
         t.value = t.value[0]
         self.index += 1
-        return t
+        return t # TODO: We might prefer to just ignore, since only unsupported syntax will enter this
 
     def handle_eof(self, text, *args, **kwargs):
         for tok in super().tokenize(text, *args, **kwargs):

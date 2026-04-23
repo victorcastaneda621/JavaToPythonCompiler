@@ -17,13 +17,15 @@
 #5 IF
 #5 '('
 #5 ID a
-#5 OR
+#5 ERROR &
+#5 ERROR &
 #5 ID b
 #5 ')'
 #5 '{'
 #6 RETURN
 #6 ID a
-#6 OR
+#6 ERROR &
+#6 ERROR &
 #6 ID b
 #6 ';'
 #7 '}'
@@ -31,13 +33,13 @@
 #7 IF
 #7 '('
 #7 ID a
-#7 AND
+#7 OR
 #7 ID b
 #7 ')'
 #7 '{'
 #8 RETURN
 #8 ID a
-#8 AND
+#8 OR
 #8 ID b
 #8 ';'
 #9 '}'
@@ -45,18 +47,20 @@
 #9 IF
 #9 '('
 #9 ID a
-#9 AND
-#9 ID b
 #9 OR
+#9 ID b
+#9 ERROR &
+#9 ERROR &
 #9 ID c
 #9 ')'
 #9 '{'
 #10 RETURN
 #10 '('
 #10 ID a
-#10 AND
-#10 ID b
 #10 OR
+#10 ID b
+#10 ERROR &
+#10 ERROR &
 #10 ID c
 #10 ')'
 #10 ';'
@@ -66,13 +70,14 @@
 #11 '('
 #11 '('
 #11 ID a
-#11 AND
+#11 OR
 #11 ID c
 #11 ')'
-#11 OR
+#11 ERROR &
+#11 ERROR &
 #11 '('
 #11 ID b
-#11 AND
+#11 OR
 #11 ID c
 #11 ')'
 #11 ')'
@@ -80,13 +85,14 @@
 #12 RETURN
 #12 '('
 #12 ID a
-#12 AND
+#12 OR
 #12 ID c
 #12 ')'
-#12 OR
+#12 ERROR &
+#12 ERROR &
 #12 '('
 #12 ID b
-#12 AND
+#12 OR
 #12 ID c
 #12 ')'
 #12 ';'
@@ -95,20 +101,20 @@
 #13 IF
 #13 '('
 #13 ID a
-#13 AND
+#13 OR
 #13 '('
 #13 ID b
-#13 AND
+#13 OR
 #13 ID c
 #13 ')'
 #13 ')'
 #13 '{'
 #14 RETURN
 #14 ID a
-#14 AND
+#14 OR
 #14 '('
 #14 ID b
-#14 AND
+#14 OR
 #14 ID c
 #14 ')'
 #14 ';'
@@ -117,9 +123,10 @@
 #15 '{'
 #16 RETURN
 #16 ID a
-#16 OR
+#16 ERROR &
+#16 ERROR &
 #16 ID b
-#16 AND
+#16 OR
 #16 ID c
 #16 ';'
 #17 '}'

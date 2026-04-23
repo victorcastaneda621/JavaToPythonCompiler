@@ -1,0 +1,78 @@
+#name "6_int_ops.java"
+#1 INT
+#1 ID var1
+#1 '='
+#1 INT_CONST 1
+#1 ';'
+#2 INT
+#2 ID var2
+#2 '='
+#2 '-'
+#2 INT_CONST 5
+#2 ';'
+#3 INT
+#3 ID var3
+#3 '='
+#3 INT_CONST 8
+#3 '+'
+#3 INT_CONST 4
+#3 ';'
+#4 INT
+#4 ID var4
+#4 '='
+#4 ID var3
+#4 '-'
+#4 ID var1
+#4 ';'
+#5 INT
+#5 ID var5
+#5 '='
+#5 INT_CONST 6
+#5 '+'
+#5 ID var2
+#5 ';'
+#6 ID var5
+#6 '='
+#6 ID var5
+#6 '*'
+#6 INT_CONST 2
+#6 ';'
+#7 ID var5
+#7 '='
+#7 ID var5
+#7 '/'
+#7 ID var3
+#7 ';'
+#8 ID var4
+#8 PLUSEQ
+#8 INT_CONST 1
+#8 ';'
+#9 ID var4
+#9 MINUSEQ
+#9 INT_CONST 1
+#9 ';'
+#10 ID var4
+#10 TIMESEQ
+#10 INT_CONST 2
+#10 ';'
+#11 ID var4
+#11 DIVEQ
+#11 INT_CONST 2
+#11 ';'
+#12 ID var5
+#12 '='
+#12 ID var5
+#12 '%'
+#12 INT_CONST 4
+#12 ';'
+#13 ID var3
+#13 MODEQ
+#13 INT_CONST 2
+#13 ';'
+#14 INT
+#14 ID var6
+#14 '='
+#14 INT_CONST 5
+#14 '%'
+#14 INT_CONST 3
+#14 ';'

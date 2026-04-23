@@ -1,0 +1,14 @@
+int var1 = 1;
+int var2 = -5;
+int var3 = 8 + 4;
+int var4 = var3 - var1;
+int var5 = 6 + var2;
+var5 = var5 * 2;
+var5 = var5 / var3;
+var4 += 1;
+var4 -= 1;
+var4 *= 2;
+var4 /= 2;
+var5 = var5 % 4;
+var3 %= 2;
+int var6 = 5 % 3;
