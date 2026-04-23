@@ -1,4 +1,35 @@
-#1 If
-#2 TYPEID if
-#3 TYPEID iF
-#4 TYPEID IF
+#name "1_keywords.java"
+#1 ID If
+#1 ';'
+#2 IF
+#2 ';'
+#3 ID iF
+#3 ';'
+#4 ID IF
+#4 ';'
+#5 ELSE
+#5 ';'
+#6 ID elsE
+#6 ';'
+#7 ID Else
+#7 ';'
+#8 ID ELSE
+#8 ';'
+#9 ID eLSe
+#9 ';'
+#10 TRUE
+#10 ';'
+#11 ID True
+#11 ';'
+#12 ID tRUe
+#12 ';'
+#13 ID TrUe
+#13 ';'
+#14 FALSE
+#14 ';'
+#15 ID False
+#15 ';'
+#16 ID fALse
+#16 ';'
+#17 ID falsE
+#17 ';'

@@ -37,9 +37,11 @@ for filename in JAVA_FILES:
         expected_file = '\n'.join(expected_file)
 
         if expected_file.strip().split() != out_file.strip().split():
-            print(f"Revisa el fichero {filename}")
+            print(f"ERROR in file {filename}")
             with open(os.path.join(TEST_DIR, filename)+'.out', 'w', encoding="utf-8") as output:
                 output.write(out_file.strip())
+        else:
+            print(f"CORRECT file {filename}")
 
     elif FASE == "02": # Parser
         pass
