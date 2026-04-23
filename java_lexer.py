@@ -3,20 +3,30 @@ from sly import Lexer
 class JavaLexer(Lexer):
 
     tokens = {
-        ID, 
+        ID, RETURN,
+        ELSE, IF, TRUE, FALSE, AND, OR,
         INT_CONST, FLOAT_CONST,
-        SHORT, INT, LONG, BOOLEAN, FLOAT, DOUBLE,
-        ELSE, IF, TRUE, FALSE
     }
 
-    literals = {';', '='}
+    literals = {';', '=', '(', ')', '{', '}'}
 
     ignore = ' \t'
 
     keywords = {
+                "return",
                 "else", "if", "true", "false",
                 "short", "int", "long", "boolean", "float", "double"
                 }
+    
+    @_(r'&&')
+    def AND(self, t):
+        t.type = "AND"
+        return t
+    
+    @_(r'\|\|')
+    def OR(self, t):
+        t.type = "OR"
+        return t
 
     @_(r'[0-9]+\.[0-9]+f?')
     def FLOAT_CONST(self, t):
@@ -36,8 +46,11 @@ class JavaLexer(Lexer):
     def ignore_newline(self, t):
         self.lineno += t.value.count('\n')
 
-    def error(self, _t):
+    def error(self, t):
+        t.type = 'ERROR'
+        t.value = t.value[0]
         self.index += 1
+        return t
 
     def handle_eof(self, text, *args, **kwargs):
         for tok in super().tokenize(text, *args, **kwargs):

@@ -41,7 +41,7 @@ for filename in JAVA_FILES:
             with open(os.path.join(TEST_DIR, filename)+'.out', 'w', encoding="utf-8") as output:
                 output.write(out_file.strip())
         else:
-            print(f"CORRECT file {filename}")
+            print(f" - file {filename} (CORRECT)")
 
     elif FASE == "02": # Parser
         pass
