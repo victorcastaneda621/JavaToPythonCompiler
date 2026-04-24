@@ -164,7 +164,7 @@ class JavaLexer(Lexer):
         t.type = 'ERROR'
         t.value = t.value[0]
         self.index += 1
-        return t # TODO: We might prefer to just ignore, since only unsupported syntax will enter this
+        return t
 
     def handle_eof(self, text, *args, **kwargs):
         for tok in super().tokenize(text, *args, **kwargs):

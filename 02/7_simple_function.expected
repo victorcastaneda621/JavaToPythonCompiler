@@ -1,0 +1,61 @@
+#name "7_simple_function.java"
+#1 PUBLIC
+#1 INT
+#1 ID func
+#1 '('
+#1 ')'
+#1 '{'
+#2 RETURN
+#2 INT_CONST 3
+#2 ';'
+#3 '}'
+#5 PUBLIC
+#5 VOID
+#5 ID func2
+#5 '('
+#5 INT
+#5 ID x
+#5 ','
+#5 INT
+#5 ID y
+#5 ')'
+#5 '{'
+#6 ID x
+#6 PLUSEQ
+#6 ID y
+#6 ';'
+#7 '}'
+#9 PRIVATE
+#9 DOUBLE
+#9 ID func3
+#9 '('
+#9 BOOLEAN
+#9 ID bool_value
+#9 ')'
+#9 '{'
+#10 DOUBLE
+#10 ID res
+#10 '='
+#10 FLOAT_CONST 0.0
+#10 ';'
+#11 IF
+#11 '('
+#11 ID bool_value
+#11 ')'
+#11 '{'
+#12 ID res
+#12 PLUSEQ
+#12 FLOAT_CONST 1.0
+#12 ';'
+#13 '}'
+#13 ELSE
+#13 '{'
+#14 ID res
+#14 PLUSEQ
+#14 FLOAT_CONST 0.0
+#14 ';'
+#15 '}'
+#16 RETURN
+#16 ID res
+#16 ';'
+#17 '}'

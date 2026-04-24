@@ -1,0 +1,79 @@
+#name "8_for_while.java"
+#1 INT
+#1 ID MAX_ITER
+#1 '='
+#1 INT_CONST 3
+#1 ';'
+#2 INT
+#2 ID res
+#2 '='
+#2 ID MAX_ITER
+#2 ';'
+#3 FOR
+#3 '('
+#3 INT
+#3 ID i
+#3 '='
+#3 INT_CONST 0
+#3 ';'
+#3 ID i
+#3 LT
+#3 '='
+#3 ID MAX_ITER
+#3 ';'
+#3 ID i
+#3 PLUSPLUS
+#3 ')'
+#3 '{'
+#4 ID res
+#4 PLUSEQ
+#4 INT_CONST 1
+#4 ';'
+#5 '}'
+#6 FOR
+#6 '('
+#6 INT
+#6 ID i
+#6 '='
+#6 ID MAX_ITER
+#6 ';'
+#6 ID i
+#6 LT
+#6 INT_CONST 0
+#6 ';'
+#6 ID i
+#6 MINUSMINUS
+#6 ')'
+#6 '{'
+#7 ID res
+#7 PLUSEQ
+#7 INT_CONST 1
+#7 ';'
+#8 '}'
+#9 WHILE
+#9 '('
+#9 ID res
+#9 GT
+#9 INT_CONST 0
+#9 ')'
+#9 '{'
+#10 ID res
+#10 MINUSEQ
+#10 INT_CONST 1
+#10 ';'
+#11 '}'
+#12 DO
+#12 '{'
+#13 ID res
+#13 PLUSEQ
+#13 INT_CONST 1
+#13 ';'
+#14 '}'
+#14 WHILE
+#14 '('
+#14 ID res
+#14 GT
+#14 '='
+#14 ID MAX_ITER
+#14 ')'
+#14 ';'

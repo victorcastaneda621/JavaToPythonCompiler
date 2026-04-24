@@ -5,7 +5,7 @@ from java_lexer import JavaLexer
 from java_parser import JavaParser
 #from Clases import *
 
-FASE = "01"
+FASE = "02"
 
 DIR = r"C:\Users\Usuario\Desktop\compiler"
 sys.path.append(DIR)
@@ -43,6 +43,27 @@ for filename in JAVA_FILES:
         else:
             print(f" - file {filename} (CORRECT)")
 
-    elif FASE == "02": # Parser
-        pass
+    elif FASE in ('02', '03'): # Parser or Translator/Evaluator
+        tokens = lexer.tokenize(java_file)
+        ast = parser.parse(tokens)
+    
+        if parser.errores:
+            resultado = '\n'.join(parser.errores)
+            print(f"ERROR in file {filename}")
+            with open(os.path.join(TEST_DIR, filename)+'.out', 'w', encoding="utf-8") as output:
+                output.write(resultado.strip())
+        else:
+            resultado = ast.str(0)  # AST pretty-printed, we'll define this
+            out_file = [linea.strip() for linea in resultado.split('\n') if linea.strip()]
+            expected_file_lines = [linea.strip() for linea in expected_file.split('\n') if linea.strip()]
+            out_file_str = '\n'.join(out_file)
+            expected_str = '\n'.join(expected_file_lines)
+            
+            if expected_str.strip().split() != out_file_str.strip().split():
+                print(f"ERROR in file {filename}")
+                with open(os.path.join(TEST_DIR, filename)+'.out', 'w', encoding="utf-8") as output:
+                    output.write(out_file_str.strip())
+            else:
+                print(f" - file {filename} (CORRECT)")
+
 
