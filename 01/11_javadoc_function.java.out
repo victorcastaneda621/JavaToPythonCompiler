@@ -10,7 +10,8 @@
 #2 INT_CONST 0
 #2 ';'
 #3 PUBLIC
-#3 ID String
+#3 STRINGTYPE
+#3 ID str
 #3 '='
 #3 NULL
 #3 ';'
@@ -42,13 +43,17 @@
 #12 ']'
 #12 ID array
 #12 '='
+#12 NEW
+#12 INT
 #12 '['
+#12 ']'
+#12 '{'
 #12 INT_CONST 1
 #12 ','
 #12 INT_CONST 2
 #12 ','
 #12 INT_CONST 3
-#12 ']'
+#12 '}'
 #12 ';'
 #13 PRIVATE
 #13 INT
@@ -56,8 +61,12 @@
 #13 ']'
 #13 ID empty
 #13 '='
+#13 NEW
+#13 INT
 #13 '['
 #13 ']'
+#13 '{'
+#13 '}'
 #13 ';'
 #15 JAVADOC /**
 * This is a javadoc for classB.

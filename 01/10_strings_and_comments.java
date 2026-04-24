@@ -13,11 +13,11 @@ char a = 'a';
 String b = "abc";
 /* // Sigue siendo un comentario multilinea */
 String d = "ABC'";
-String comment = "// No es un comentario"
+String comment = "// No es un comentario";
 // int xy = x + y; es un comentario
-String comment = "/* No es un comentario */"
+String comment = "/* No es un comentario */";
 /* int xy = x + y; 
 es un comentario 
-*/String empty = ""
+*/String empty = "";
 /* /* */
 /*

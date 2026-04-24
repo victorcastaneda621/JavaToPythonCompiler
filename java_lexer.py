@@ -6,11 +6,11 @@ class JavaLexer(Lexer):
         ID, RETURN, CLASS, STATIC,
         ELSE, IF, TRUE, FALSE, AND, OR, EQEQ,
         PLUSEQ, MINUSEQ, TIMESEQ, DIVEQ, MODEQ,
-        INT_CONST, FLOAT_CONST,
+        INT_CONST, FLOAT_CONST, CHAR_CONST, STR_CONST,
         PLUSPLUS, MINUSMINUS,
-        PUBLIC, PRIVATE, VOID, NULL,
+        PUBLIC, PRIVATE, VOID, NULL, NEW,
         LE, LT, GE, GT, NEQ, NOT,
-        INLINE_COMMENT, MULTILINE_COMMENT, JAVADOC, STRING, CHAR,
+        INLINE_COMMENT, MULTILINE_COMMENT, JAVADOC, STRINGTYPE, CHAR,
         SHORT, INT, LONG, BOOLEAN, FLOAT, DOUBLE,
         FOR, WHILE, DO
     }
@@ -22,19 +22,24 @@ class JavaLexer(Lexer):
     keywords = {
                 "return", "class", "static",
                 "else", "if", "true", "false",
-                "short", "int", "long", "boolean", "float", "double",
-                "public", "private", "void", "null",
+                "short", "int", "long", "boolean", "float", "double", "char", "String",
+                "public", "private", "void", "null", "new",
                 "for", "while", "do"
                 }
     
-    @_(r'\"(.*?)\"')
-    def STRING(self, t):
-        t.type = "STRING"
+    @_(r'"([^"\\\n]|\\.)*(\"|\n|$)')
+    def STR_CONST(self, t):
+        if not t.value.endswith("\""):
+            t.type = 'ERROR'
+            t.value = "Unterminated string constant"
+            self.lineno += 1
+            return t
+        t.type = "STR_CONST"
         return t
     
     @_(r'\'.\'')
-    def CHAR(self, t):
-        t.type = "CHAR"
+    def CHAR_CONST(self, t):
+        t.type = "CHAR_CONST"
         return t
     
     @_(r'//.*')
@@ -44,12 +49,17 @@ class JavaLexer(Lexer):
 
     @_(r'/\*\*[\s\S]*?\*/')
     def JAVADOC(self, t):
+        self.lineno += t.value.count('\n')
         t.type = "JAVADOC"
         return t
     
     @_(r'/\*[\s\S]*?(\*/|$)')
     def MULTILINE_COMMENT(self, t):
         self.lineno += t.value.count('\n')
+        if not t.value.endswith('*/'):
+            t.type = 'ERROR'
+            t.value = 'EOF in comment'
+            return t
         return t
     
     @_(r'&&')
@@ -143,7 +153,7 @@ class JavaLexer(Lexer):
     @_(r'[A-Z_a-z][A-Z0-9_a-z]*') # Keywords, or any other word not previously handled
     def ID(self, t):
         if t.value in self.keywords:
-            t.type = t.value.upper() 
+            t.type = t.value.upper() if t.value != "String" else "STRINGTYPE"
         return t
     
     @_(r'\n+')
@@ -159,15 +169,6 @@ class JavaLexer(Lexer):
     def handle_eof(self, text, *args, **kwargs):
         for tok in super().tokenize(text, *args, **kwargs):
             yield tok
-            
-        if self.__class__.__name__ == 'MatchingString':
-            class EOFToken: pass
-            t = EOFToken()
-            t.type = "ERROR"
-            t.value = '"EOF in string constant"'
-            t.lineno = self.lineno
-            yield t
-            self.begin(JavaLexer) 
 
     def tokenize(self, text):
         list_strings = []
@@ -178,7 +179,7 @@ class JavaLexer(Lexer):
                 result += f"{token.value}"
             elif token.type in self.literals:
                 result = f'#{token.lineno} \'{token.type}\' '
-            elif token.type in ['STRING', 'INLINE_COMMENT', 'MULTILINE_COMMENT', 'JAVADOC']:
+            elif token.type in ['STR_CONST', 'CHAR_CONST', 'INLINE_COMMENT', 'MULTILINE_COMMENT', 'JAVADOC']:
                 result += token.value
             elif token.type in ['INT_CONST', 'FLOAT_CONST']:
                 result += str(token.value)

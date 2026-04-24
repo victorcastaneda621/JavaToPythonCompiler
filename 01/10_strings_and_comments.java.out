@@ -24,37 +24,47 @@ FIN */
 #9 ';'
 #10 MULTILINE_COMMENT /* x,y,z */
 #11 INLINE_COMMENT // /* Sigue siendo un comentario de una linea */
-#12 ID char
+#12 CHAR
 #12 ID a
 #12 '='
-#12 CHAR
+#12 CHAR_CONST 'a'
 #12 ';'
-#13 ID String
+#13 STRINGTYPE
 #13 ID b
 #13 '='
-#13 STRING "abc"
+#13 STR_CONST "
+#13 ID abc
+#13 STR_CONST "
 #13 ';'
 #14 MULTILINE_COMMENT /* // Sigue siendo un comentario multilinea */
-#15 ID String
+#15 STRINGTYPE
 #15 ID d
 #15 '='
-#15 STRING "ABC'"
+#15 STR_CONST "
+#15 ID ABC
+#15 ERROR '
+#15 STR_CONST "
 #15 ';'
-#16 ID String
+#16 STRINGTYPE
 #16 ID comment
 #16 '='
-#16 STRING "// No es un comentario"
+#16 STR_CONST "
+#16 INLINE_COMMENT // No es un comentario";
 #17 INLINE_COMMENT // int xy = x + y; es un comentario
-#18 ID String
+#18 STRINGTYPE
 #18 ID comment
 #18 '='
-#18 STRING "/* No es un comentario */"
+#18 STR_CONST "
+#18 MULTILINE_COMMENT /* No es un comentario */
+#18 STR_CONST "
+#18 ';'
 #19 MULTILINE_COMMENT /* int xy = x + y;
 es un comentario
 */
-#21 ID String
+#21 STRINGTYPE
 #21 ID empty
 #21 '='
-#21 STRING ""
+#21 STR_CONST ""
+#21 ';'
 #22 MULTILINE_COMMENT /* /* */
-#23 MULTILINE_COMMENT /*
+#23 ERROR EOF in comment

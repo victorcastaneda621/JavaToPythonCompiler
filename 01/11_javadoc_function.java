@@ -1,6 +1,6 @@
 public class classA {
     private int x = 0;
-    public String = null;
+    public String str = null;
 
     public int get_x() {
         return x;
@@ -9,8 +9,8 @@ public class classA {
 
 public class classB {
     private int param = -1;
-    private int[] array = [1,2,3];
-    private int[] empty = [];
+    private int[] array = new int[] {1,2,3};
+    private int[] empty = new int[] {};
     
     /**
      * This is a javadoc for classB.
