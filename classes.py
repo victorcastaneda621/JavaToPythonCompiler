@@ -24,13 +24,11 @@ class Class(Node):
     visibility: str = '_no_set'
     static: bool = False
     name: str = '_no_set'
-    field_list: List = field(default_factory=list)
-    method_list: List = field(default_factory=list)
+    member_list: List = field(default_factory=list)
     def str(self, n):
         res = super().str(n)
         res += f'{" "*n}_class: {self.name}\n'
-        res += ''.join([a.str(n+2) for a in self.field_list])
-        res += ''.join([m.str(n+2) for m in self.method_list])
+        res += ''.join([m.str(n+2) for m in self.member_list])
         return res
 
 @dataclass
@@ -44,13 +42,14 @@ class Field(Node):
         res = super().str(n)
         res += f'{" "*n}_field: {self.name}\n'
         res += f'{" "*n}type: {self.type}\n'
-        res += f'{" "*n}value:\n'
+        if self.value:
+            res += f'{" "*n}value:\n'
         res += self.value.str(n+2)
         return res
 
 @dataclass
 class Method(Node):
-    javadoc: str = None
+    javadoc: 'Javadoc' = None
     visibility: str = '_no_set'
     static: bool = False
     return_type: str = '_no_set'
@@ -150,7 +149,8 @@ class VariableDeclaration(Expr):
         res = super().str(n)
         res += f'{" "*n}_var: {self.name}\n'
         res += f'{" "*n}type: {self.type}\n'
-        res += f'{" "*n}value:\n'
+        if self.value:
+            res += f'{" "*n}value:\n'
         res += self.value.str(n+2)
         return res
     
@@ -210,18 +210,105 @@ class Return(Expr):
     value: Expr = None
     def str(self, n):
         res = super().str(n)
-        res += f'{" "*n}_return: {self.name}\n'
+        res += f'{" "*n}_return\n'
         res += f'{" "*n}value:\n'
-        res += self.value.str(n+2)
+        if self.value:
+            res += self.value.str(n+2)
         return res
 
 @dataclass
 class Int(Expr):
-    value: Expr = None
-    type: str = '_no_set'
+    value: int = 0
     def str(self, n):
         res = super().str(n)
         res += f'{(n)*" "}_int\n'
         res += f'{(n+2)*" "}{self.value}\n'
-        res += f'{(n)*" "}: {self.type}\n'
+        return res
+    
+@dataclass
+class Float(Expr):
+    value: float = 0.0
+    def str(self, n):
+        res = super().str(n)
+        res += f'{(n)*" "}_float\n'
+        res += f'{(n+2)*" "}{self.value}\n'
+        return res
+    
+@dataclass
+class Boolean(Expr):
+    value: bool = False
+    def str(self, n):
+        res = super().str(n)
+        res += f'{(n)*" "}_boolean\n'
+        res += f'{(n+2)*" "}{self.value}\n'
+        return res
+
+@dataclass
+class String(Expr):
+    value: str = ''
+    def str(self, n):
+        res = super().str(n)
+        res += f'{(n)*" "}_string\n'
+        res += f'{(n+2)*" "}{self.value}\n'
+        return res
+
+@dataclass
+class Char(Expr):
+    value: str = ''
+    def str(self, n):
+        res = super().str(n)
+        res += f'{(n)*" "}_char\n'
+        res += f'{(n+2)*" "}{self.value}\n'
+        return res
+    
+@dataclass
+class Null(Expr):
+    def str(self, n):
+        res = super().str(n)
+        res += f'{(n)*" "}_null\n'
+        return res
+    
+@dataclass
+class InlineComment(Node):
+    contents: str = '_no_set'
+    def str(self, n):
+        res = super().str(n)
+        res += f'{(n)*" "}_inline_comment\n'
+        res += f'{(n)*" "}contents: {self.contents}\n'
+        return res
+
+@dataclass
+class MultilineComment(Node):
+    contents: str = '_no_set'
+    def str(self, n):
+        res = super().str(n)
+        res += f'{(n)*" "}_multiline_comment\n'
+        res += f'{(n)*" "}contents: {self.contents}\n'
+        return res
+    
+@dataclass
+class Javadoc(Node):
+    contents: str = '_no_set'
+    def str(self, n):
+        res = super().str(n)
+        res += f'{(n)*" "}_javadoc\n'
+        res += f'{(n)*" "}contents: {self.contents}\n'
+        return res
+    
+@dataclass
+class VarRef(Expr):
+    name: str = '_no_set'
+    def str(self, n):
+        res = super().str(n)
+        res += f'{" "*n}_varref: {self.name}\n'
+        return res
+    
+@dataclass
+class MethodCall(Expr):
+    method_name: str = '_no_set'
+    params: List = field(default_factory=list)
+    def str(self, n):
+        res = super().str(n)
+        res += f'{" "*n}_methodCall: {self.method_name}\n'
+        res += ''.join([p.str(n+2) for p in self.params])
         return res
