@@ -1,0 +1,17 @@
+If;
+if;
+iF;
+IF;
+else;
+elsE;
+Else;
+ELSE;
+eLSe;
+true;
+True;
+tRUe;
+TrUe;
+false;
+False;
+fALse;
+falsE;

@@ -1,0 +1,16 @@
+#name "3_if_conditions.java"
+#1 IF
+#1 '('
+#1 TRUE
+#1 ')'
+#1 '{'
+#2 RETURN
+#2 FALSE
+#2 ';'
+#3 '}'
+#3 ELSE
+#3 '{'
+#4 RETURN
+#4 TRUE
+#4 ';'
+#5 '}'

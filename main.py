@@ -5,12 +5,12 @@ from java_lexer import JavaLexer
 from java_parser import JavaParser
 #from Clases import *
 
-FASE = "02"
+PHASE = "02"
 
 DIR = r"C:\Users\Usuario\Desktop\compiler"
 sys.path.append(DIR)
 
-TEST_DIR = os.path.join(DIR, FASE)
+TEST_DIR = os.path.join(DIR, PHASE)
 JAVA_FILES = [file for file in os.listdir(TEST_DIR)
               if os.path.isfile(os.path.join(TEST_DIR, file)) and
               re.search(r"^[a-zA-Z0-9_].*\.(java)$",file)]
@@ -29,7 +29,7 @@ for filename in JAVA_FILES:
     if os.path.isfile(os.path.join(TEST_DIR, filename).replace(".java", ".out")):
         os.remove(os.path.join(TEST_DIR, filename).replace(".java", ".out"))
 
-    if FASE == "01": # Lexer
+    if PHASE == "01": # Lexer
         tokens = f'#name "{filename}"\n' + '\n'.join(lexer.tokenize(java_file))
         out_file = [linea.strip() for linea in tokens.split('\n') if linea.strip()]
         expected_file = [linea.strip() for linea in expected_file.split('\n') if linea.strip()]
@@ -43,7 +43,7 @@ for filename in JAVA_FILES:
         else:
             print(f" - file {filename} (CORRECT)")
 
-    elif FASE in ('02', '03'): # Parser or Translator/Evaluator
+    elif PHASE in ('02', '03'): # Parser or Translator/Evaluator
         tokens = lexer.tokenize(java_file)
         ast = parser.parse(tokens)
     
