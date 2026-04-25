@@ -19,8 +19,6 @@ class JavaParser(Parser):
         ('left', 'PLUSPLUS', 'MINUSMINUS')
     )
 
-    debugfile = 'parser.out'
-
     def __init__(self):
         self.filename = ""
         self.errors = []

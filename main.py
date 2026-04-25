@@ -5,7 +5,7 @@ from java_lexer import JavaLexer
 from java_parser import JavaParser
 from translator import Translator
 
-PHASE = "02"
+PHASE = "03"
 
 DIR = r"C:\Users\Usuario\Desktop\compiler"
 sys.path.append(DIR)
