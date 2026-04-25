@@ -44,7 +44,7 @@ class Field(Node):
         res += f'{" "*n}type: {self.type}\n'
         if self.value:
             res += f'{" "*n}value:\n'
-        res += self.value.str(n+2)
+            res += self.value.str(n+2)
         return res
 
 @dataclass
@@ -151,7 +151,7 @@ class VariableDeclaration(Expr):
         res += f'{" "*n}type: {self.type}\n'
         if self.value:
             res += f'{" "*n}value:\n'
-        res += self.value.str(n+2)
+            res += self.value.str(n+2)
         return res
     
 @dataclass
@@ -305,10 +305,11 @@ class VarRef(Expr):
     
 @dataclass
 class MethodCall(Expr):
+    object: str = '_no_set'
     method_name: str = '_no_set'
     params: List = field(default_factory=list)
     def str(self, n):
         res = super().str(n)
-        res += f'{" "*n}_methodCall: {self.method_name}\n'
+        res += f'{" "*n}_methodCall: {self.object}.{self.method_name}\n'
         res += ''.join([p.str(n+2) for p in self.params])
         return res

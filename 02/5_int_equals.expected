@@ -1,33 +1,60 @@
-#name "5_int_equals.java"
-#1 INT
-#1 ID x
-#1 '='
-#1 INT_CONST 5
-#1 ';'
-#2 INT
-#2 ID y
-#2 '='
-#2 INT_CONST 4
-#2 ';'
-#4 IF
-#4 '('
-#4 ID x
-#4 EQEQ
-#4 INT_CONST 5
-#4 ')'
-#4 '{'
-#5 RETURN
-#5 ID x
-#5 ';'
-#6 '}'
-#7 IF
-#7 '('
-#7 ID x
-#7 EQEQ
-#7 ID y
-#7 ')'
-#7 '{'
-#8 RETURN
-#8 ID y
-#8 ';'
-#9 '}'
+#0
+_program
+  #1
+  _class: Eq
+    #2
+    _field: x
+    type: int
+    value:
+      #2
+      _int
+        5
+    #3
+    _field: y
+    type: int
+    value:
+      #3
+      _int
+        4
+    #5
+    _method: func
+    return_type: int
+      #6
+      _if
+      condition:
+        #6
+        _binaryOp:
+        operation: ==
+        op_left:
+          #6
+          _varref: x
+        op_right:
+          #6
+          _int
+            5
+      then:
+        #7
+        _return
+        value:
+          #7
+          _varref: x
+      else:
+      #9
+      _if
+      condition:
+        #9
+        _binaryOp:
+        operation: ==
+        op_left:
+          #9
+          _varref: x
+        op_right:
+          #9
+          _varref: y
+      then:
+        #10
+        _return
+        value:
+          #10
+          _varref: y
+      else:

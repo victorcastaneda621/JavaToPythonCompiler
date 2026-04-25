@@ -141,13 +141,17 @@ class JavaParser(Parser):
     def instruction(self, p):
         return p.expr
     
-    @_("IF '(' expr ')' '{' instruction_list '}'", 
-    "IF '(' expr ')' '{' instruction_list '}' ELSE '{' instruction_list '}'",
-    "IF '(' expr ')' '{' instruction_list '}' ELSE instruction")
+    @_("IF '(' expr ')' '{' instruction_list '}'")
     def instruction(self, p):
-        if p.instruction_list1:
-            return Conditional(condition=p.expr, then_do=p.instruction_list0, else_do=p.instruction_list1)
         return Conditional(condition=p.expr, then_do=p.instruction_list)
+    
+    @_("IF '(' expr ')' '{' instruction_list '}' ELSE '{' instruction_list '}'")
+    def instruction(self, p):
+        return Conditional(condition=p.expr, then_do=p.instruction_list0, else_do=p.instruction_list1)
+    
+    @_("IF '(' expr ')' '{' instruction_list '}' ELSE instruction")
+    def instruction(self, p):
+        return Conditional(condition=p.expr, then_do=p.instruction_list0, else_do=p.instruction)
     
     @_("INLINE_COMMENT")
     def instruction(self, p):
@@ -203,9 +207,11 @@ class JavaParser(Parser):
     def expr(self, p):
         return ExprOp(operation='-', value=p.expr)
     
-    @_("RETURN expr")
+    @_("RETURN expr", "RETURN ';'")
     def instruction(self, p):
-        return Return(value=p.expr)
+        if p.expr:
+            return Return(value=p.expr)
+        return Return()
     
     @_("FOR '(' expr ';' expr ';' expr ')' '{' instruction_list '}'")
     def instruction(self, p):
@@ -235,6 +241,48 @@ class JavaParser(Parser):
     def expr(self, p):
         return Boolean(value=p[0])
     
+    @_("STR_CONST")
+    def expr(self, p):
+        return String(value=p.STR_CONST)
+    
     @_("NULL")
     def expr(self, p):
         return Null()
+
+    @_("ID")
+    def expr(self, p):
+        return VarRef(name=p.ID)
+    
+    @_("ID '=' expr")
+    def expr(self, p):
+        return Assign(name=p.ID, value=p.expr)
+    
+    @_("ID PLUSEQ expr", "ID MINUSEQ expr", "ID TIMESEQ expr", "ID DIVEQ expr", "ID MODEQ expr",)
+    def expr(self, p):
+        return CompoundAssign(name=p.ID, value=p.expr, operator=p[1])
+    
+    @_("return_type ID '=' expr", "return_type ID ';'")
+    def instruction(self, p):
+        if p.expr:
+            return VariableDeclaration(type=p.return_type, name=p.ID, value=p.expr)
+        return VariableDeclaration(type=p.return_type, name=p.ID)
+    
+    @_("ID '.' ID '(' arg_list ')'")
+    def expr(self, p):
+        return MethodCall(object=p[0], method_name=p[2], params=p.arg_list)
+    
+    @_("expr")
+    def arg_list(self, p):
+        return [p.expr]
+
+    @_("arg_list ',' expr")
+    def arg_list(self, p):
+        return p.arg_list + [p.expr]
+
+    @_("")
+    def arg_list(self, p):
+        return []
+
+    @_("'(' expr ')'")
+    def expr(self, p):
+        return p.expr

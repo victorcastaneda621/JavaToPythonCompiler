@@ -1,77 +1,131 @@
-#name "8_for_while.java"
-#1 INT
-#1 ID MAX_ITER
-#1 '='
-#1 INT_CONST 3
-#1 ';'
-#2 INT
-#2 ID res
-#2 '='
-#2 ID MAX_ITER
-#2 ';'
-#3 FOR
-#3 '('
-#3 INT
-#3 ID i
-#3 '='
-#3 INT_CONST 0
-#3 ';'
-#3 ID i
-#3 LE
-#3 ID MAX_ITER
-#3 ';'
-#3 ID i
-#3 PLUSPLUS
-#3 ')'
-#3 '{'
-#4 ID res
-#4 PLUSEQ
-#4 INT_CONST 1
-#4 ';'
-#5 '}'
-#6 FOR
-#6 '('
-#6 INT
-#6 ID i
-#6 '='
-#6 ID MAX_ITER
-#6 ';'
-#6 ID i
-#6 LT
-#6 INT_CONST 0
-#6 ';'
-#6 ID i
-#6 MINUSMINUS
-#6 ')'
-#6 '{'
-#7 ID res
-#7 PLUSEQ
-#7 INT_CONST 1
-#7 ';'
-#8 '}'
-#9 WHILE
-#9 '('
-#9 ID res
-#9 GT
-#9 INT_CONST 0
-#9 ')'
-#9 '{'
-#10 ID res
-#10 MINUSEQ
-#10 INT_CONST 1
-#10 ';'
-#11 '}'
-#12 DO
-#12 '{'
-#13 ID res
-#13 PLUSEQ
-#13 INT_CONST 1
-#13 ';'
-#14 '}'
-#14 WHILE
-#14 '('
-#14 ID res
-#14 GE
-#14 ID MAX_ITER
-#14 ')'
-#14 ';'
+#0
+_program
+  #1
+  _class: MoreNonsense
+    #2
+    _field: MAX_ITER
+    type: int
+    value:
+      #2
+      _int
+        3
+    #4
+    _method: nonsenseFunc
+    return_type: void
+      #5
+      _var: res
+      type: int
+      value:
+        #5
+        _varref: MAX_ITER
+      #6
+      _for
+      initial:
+        #6
+        _var: i
+        type: int
+        value:
+          #6
+          _int
+            0
+      condition:
+        #6
+        _binaryOp:
+        operation: <=
+        op_left:
+          #6
+          _varref: i
+        op_right:
+          #6
+          _varref: MAX_ITER
+      update:
+        #6
+        _exprOp:
+        operation: ++
+        value:
+          #6
+          _varref: i
+      body:
+        #7
+        _cassign: res
+        operator: +=
+        value:
+          #7
+          _int
+            1
+      #9
+      _for
+      initial:
+        #9
+        _var: i
+        type: int
+        value:
+          #9
+          _varref: MAX_ITER
+      condition:
+        #9
+        _binaryOp:
+        operation: 
+        op_left:
+          #9
+          _varref: i
+        op_right:
+          #9
+          _int
+            0
+      update:
+        #9
+        _exprOp:
+        operation: --
+        value:
+          #9
+          _varref: i
+      body:
+        #10
+        _cassign: res
+        operator: +=
+        value:
+          #10
+          _int
+            1
+      #12
+      _while
+      condition:
+        #12
+        _binaryOp:
+        operation: >
+        op_left:
+          #12
+          _varref: res
+        op_right:
+          #12
+          _int
+            0
+      body:
+        #13
+        _cassign: res
+        operator: -=
+        value:
+          #13
+          _int
+            1
+      #15
+      _dowhile
+      body:
+        #16
+        _cassign: res
+        operator: +=
+        value:
+          #16
+          _int
+            1
+      condition:
+        #17
+        _binaryOp:
+        operation: >=
+        op_left:
+          #17
+          _varref: res
+        op_right:
+          #17
+          _varref: MAX_ITER

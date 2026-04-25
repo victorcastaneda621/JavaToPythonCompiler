@@ -16,7 +16,7 @@ public class EvenMoreNonsense {
     private String d = "ABC'";
     public String comment = "// No es un comentario";
     // int xy = x + y; es un comentario
-    comment = "/* No es un comentario */";
+    public String comment2 = "/* No es un comentario */";
     /* int xy = x + y; 
     es un comentario 
     */private String empty = "";

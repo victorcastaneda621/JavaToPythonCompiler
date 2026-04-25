@@ -1,125 +1,233 @@
-#name "4_if_and_or.java"
-#1 BOOLEAN
-#1 ID a
-#1 '='
-#1 TRUE
-#1 ';'
-#2 BOOLEAN
-#2 ID b
-#2 '='
-#2 FALSE
-#2 ';'
-#3 BOOLEAN
-#3 ID c
-#3 '='
-#3 TRUE
-#3 ';'
-#5 IF
-#5 '('
-#5 ID a
-#5 AND
-#5 ID b
-#5 ')'
-#5 '{'
-#6 RETURN
-#6 ID a
-#6 AND
-#6 ID b
-#6 ';'
-#7 '}'
-#7 ELSE
-#7 IF
-#7 '('
-#7 ID a
-#7 OR
-#7 ID b
-#7 ')'
-#7 '{'
-#8 RETURN
-#8 ID a
-#8 OR
-#8 ID b
-#8 ';'
-#9 '}'
-#9 ELSE
-#9 IF
-#9 '('
-#9 ID a
-#9 OR
-#9 ID b
-#9 AND
-#9 ID c
-#9 ')'
-#9 '{'
-#10 RETURN
-#10 '('
-#10 ID a
-#10 OR
-#10 ID b
-#10 AND
-#10 ID c
-#10 ')'
-#10 ';'
-#11 '}'
-#11 ELSE
-#11 IF
-#11 '('
-#11 '('
-#11 ID a
-#11 OR
-#11 ID c
-#11 ')'
-#11 AND
-#11 '('
-#11 ID b
-#11 OR
-#11 ID c
-#11 ')'
-#11 ')'
-#11 '{'
-#12 RETURN
-#12 '('
-#12 ID a
-#12 OR
-#12 ID c
-#12 ')'
-#12 AND
-#12 '('
-#12 ID b
-#12 OR
-#12 ID c
-#12 ')'
-#12 ';'
-#13 '}'
-#13 ELSE
-#13 IF
-#13 '('
-#13 ID a
-#13 OR
-#13 '('
-#13 ID b
-#13 OR
-#13 ID c
-#13 ')'
-#13 ')'
-#13 '{'
-#14 RETURN
-#14 ID a
-#14 OR
-#14 '('
-#14 ID b
-#14 OR
-#14 ID c
-#14 ')'
-#14 ';'
-#15 '}'
-#15 ELSE
-#15 '{'
-#16 RETURN
-#16 ID a
-#16 AND
-#16 ID b
-#16 OR
-#16 ID c
-#16 ';'
-#17 '}'
+#0
+_program
+  #1
+  _class: Complicated
+    #2
+    _field: a
+    type: boolean
+    value:
+      #2
+      _boolean
+        True
+    #3
+    _field: b
+    type: boolean
+    value:
+      #3
+      _boolean
+        False
+    #4
+    _field: c
+    type: boolean
+    value:
+      #4
+      _boolean
+        True
+    #6
+    _method: complex
+    return_type: boolean
+      #7
+      _if
+      condition:
+        #7
+        _binaryOp:
+        operation: &&
+        op_left:
+          #7
+          _varref: a
+        op_right:
+          #7
+          _varref: b
+      then:
+        #8
+        _return
+        value:
+          #8
+          _binaryOp:
+          operation: &&
+          op_left:
+            #8
+            _varref: a
+          op_right:
+            #8
+            _varref: b
+      else:
+        #9
+        _if
+        condition:
+          #9
+          _binaryOp:
+          operation: ||
+          op_left:
+            #9
+            _varref: a
+          op_right:
+            #9
+            _varref: b
+        then:
+          #10
+          _return
+          value:
+            #10
+            _binaryOp:
+            operation: ||
+            op_left:
+              #10
+              _varref: a
+            op_right:
+              #10
+              _varref: b
+        else:
+          #11
+          _if
+          condition:
+            #11
+            _binaryOp:
+            operation: ||
+            op_left:
+              #11
+              _varref: a
+            op_right:
+              #11
+              _binaryOp:
+              operation: &&
+              op_left:
+                #11
+                _varref: b
+              op_right:
+                #11
+                _varref: c
+          then:
+            #12
+            _return
+            value:
+              #12
+              _binaryOp:
+              operation: ||
+              op_left:
+                #12
+                _varref: a
+              op_right:
+                #12
+                _binaryOp:
+                operation: &&
+                op_left:
+                  #12
+                  _varref: b
+                op_right:
+                  #12
+                  _varref: c
+          else:
+            #13
+            _if
+            condition:
+              #13
+              _binaryOp:
+              operation: &&
+              op_left:
+                #13
+                _binaryOp:
+                operation: ||
+                op_left:
+                  #13
+                  _varref: a
+                op_right:
+                  #13
+                  _varref: c
+              op_right:
+                #13
+                _binaryOp:
+                operation: ||
+                op_left:
+                  #13
+                  _varref: b
+                op_right:
+                  #13
+                  _varref: c
+            then:
+              #14
+              _return
+              value:
+                #14
+                _binaryOp:
+                operation: &&
+                op_left:
+                  #14
+                  _binaryOp:
+                  operation: ||
+                  op_left:
+                    #14
+                    _varref: a
+                  op_right:
+                    #14
+                    _varref: c
+                op_right:
+                  #14
+                  _binaryOp:
+                  operation: ||
+                  op_left:
+                    #14
+                    _varref: b
+                  op_right:
+                    #14
+                    _varref: c
+            else:
+              #15
+              _if
+              condition:
+                #15
+                _binaryOp:
+                operation: ||
+                op_left:
+                  #15
+                  _varref: a
+                op_right:
+                  #15
+                  _binaryOp:
+                  operation: ||
+                  op_left:
+                    #15
+                    _varref: b
+                  op_right:
+                    #15
+                    _varref: c
+              then:
+                #16
+                _return
+                value:
+                  #16
+                  _binaryOp:
+                  operation: ||
+                  op_left:
+                    #16
+                    _varref: a
+                  op_right:
+                    #16
+                    _binaryOp:
+                    operation: ||
+                    op_left:
+                      #16
+                      _varref: b
+                    op_right:
+                      #16
+                      _varref: c
+              else:
+                #18
+                _return
+                value:
+                  #18
+                  _binaryOp:
+                  operation: ||
+                  op_left:
+                    #18
+                    _binaryOp:
+                    operation: &&
+                    op_left:
+                      #18
+                      _varref: a
+                    op_right:
+                      #18
+                      _varref: b
+                  op_right:
+                    #18
+                    _varref: c
