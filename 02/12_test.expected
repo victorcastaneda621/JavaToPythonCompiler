@@ -1,0 +1,43 @@
+#1
+_program
+  #1
+  _class: Test
+    #2
+    _field: other
+    type: Test
+    value:
+      #2
+      _null
+    #3
+    _field: msg
+    type: string
+    value:
+      #3
+      _string
+        "hello\nworld"
+    #5
+    _method: getOther
+    return_type: Test
+      #6
+      _return
+      value:
+        #6
+        _varref: other
+    #9
+    _method: compute
+    return_type: int
+      #9
+      _param: obj
+      type: Test
+      #10
+      _methodCall: other.getOther
+      #11
+      _return
+      value:
+        #11
+        _methodCall: this.compute
+          #11
+          _varref: obj
+    #14
+    _method: empty
+    return_type: void

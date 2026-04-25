@@ -7,6 +7,7 @@ class JavaParser(Parser):
 
     # Operator precedence
     precedence = (
+        ('right', '=', 'PLUSEQ', 'MINUSEQ', 'TIMESEQ', 'DIVEQ', 'MODEQ'),
         ('left', 'OR'),
         ('left', 'AND'),
         ('left', 'EQEQ', 'NEQ'),
@@ -15,7 +16,7 @@ class JavaParser(Parser):
         ('left', '*', '/', '%'),
         ('right', 'NOT'),
         ('right', 'UMINUS'),
-        ('right', 'INT', 'LONG', 'SHORT', 'FLOAT', 'DOUBLE', 'BOOLEAN', 'CHAR', 'STRINGTYPE', 'VOID')
+        ('left', 'PLUSPLUS', 'MINUSMINUS')
     )
 
     debugfile = 'parser.out'
@@ -39,7 +40,7 @@ class JavaParser(Parser):
 
     @_("class_list")
     def program(self, p):
-        return Program(seq=p.class_list)
+        return Program(seq=p.class_list, line=p.lineno)
     
     @_("java_class")
     def class_list(self, p):
@@ -71,9 +72,9 @@ class JavaParser(Parser):
     def member_list(self, p):
         return p.member_list + [p.member]
 
-    @_("")
+    @_("member")
     def member_list(self, p):
-        return []
+        return [p.member]
     
     @_("visibility static_mod return_type ID '=' expr ';'")
     def member(self, p):
@@ -82,7 +83,8 @@ class JavaParser(Parser):
             static=p.static_mod, 
             type=p.return_type, 
             name=p.ID, 
-            value=p.expr
+            value=p.expr, 
+            line=p.lineno
         )
     
     @_("visibility static_mod return_type ID ';'")
@@ -92,7 +94,8 @@ class JavaParser(Parser):
             static=p.static_mod, 
             type=p.return_type, 
             name=p.ID, 
-            value=None
+            value=None, 
+            line=p.lineno
         )
     
     @_("visibility static_mod return_type ID '(' param_list ')' '{' instruction_list '}'")
@@ -103,10 +106,10 @@ class JavaParser(Parser):
             return_type=p.return_type, 
             name=p.ID,
             params_list=p.param_list, 
-            instructions_list=p.instruction_list
+            instructions_list=p.instruction_list, 
+            line=p.lineno
         )
 
-    # Method with javadoc
     @_("javadoc visibility static_mod return_type ID '(' param_list ')' '{' instruction_list '}'")
     def member(self, p):
         return Method(
@@ -116,28 +119,55 @@ class JavaParser(Parser):
             return_type=p.return_type, 
             name=p.ID,
             params_list=p.param_list, 
-            instructions_list=p.instruction_list
+            instructions_list=p.instruction_list, 
+            line=p.lineno
+        )
+    
+    @_("visibility static_mod ID '(' param_list ')' '{' instruction_list '}'")
+    def member(self, p):
+        return Method(
+            visibility=p.visibility, 
+            static=p.static_mod,
+            return_type=None, 
+            name=p.ID,
+            params_list=p.param_list, 
+            instructions_list=p.instruction_list, 
+            line=p.lineno
+        )
+
+    @_("javadoc visibility static_mod ID '(' param_list ')' '{' instruction_list '}'")
+    def member(self, p):
+        return Method(
+            javadoc=p.javadoc, 
+            visibility=p.visibility, 
+            static=p.static_mod,
+            return_type=None, 
+            name=p.ID,
+            params_list=p.param_list, 
+            instructions_list=p.instruction_list, 
+            line=p.lineno
         )
     
     @_("INLINE_COMMENT")
     def member(self, p):
-        return InlineComment(contents=p.INLINE_COMMENT)
+        return InlineComment(contents=p.INLINE_COMMENT, line=p.lineno)
 
     @_("MULTILINE_COMMENT")
     def member(self, p):
-        return MultilineComment(contents=p.MULTILINE_COMMENT)
+        return MultilineComment(contents=p.MULTILINE_COMMENT, line=p.lineno)
     
     @_("JAVADOC")
     def javadoc(self, p):
         return Javadoc(
-            contents=p.JAVADOC
+            contents=p.JAVADOC, line=p.lineno
         )
     
     @_("return_type ID")
     def param(self, p):
         return Param(
             type=p.return_type,
-            name=p.ID
+            name=p.ID, 
+            line=p.lineno
         )
     
     @_("expr ';'")
@@ -146,23 +176,23 @@ class JavaParser(Parser):
     
     @_("IF '(' expr ')' '{' instruction_list '}'")
     def instruction(self, p):
-        return Conditional(condition=p.expr, then_do=p.instruction_list)
+        return Conditional(condition=p.expr, then_do=p.instruction_list, line=p.lineno)
     
     @_("IF '(' expr ')' '{' instruction_list '}' ELSE '{' instruction_list '}'")
     def instruction(self, p):
-        return Conditional(condition=p.expr, then_do=p.instruction_list0, else_do=p.instruction_list1)
+        return Conditional(condition=p.expr, then_do=p.instruction_list0, else_do=p.instruction_list1, line=p.lineno)
     
     @_("IF '(' expr ')' '{' instruction_list '}' ELSE instruction")
     def instruction(self, p):
-        return Conditional(condition=p.expr, then_do=p.instruction_list, else_do=p.instruction)
+        return Conditional(condition=p.expr, then_do=p.instruction_list, else_do=[p.instruction], line=p.lineno)
     
     @_("INLINE_COMMENT")
     def instruction(self, p):
-        return InlineComment(contents=p.INLINE_COMMENT)
+        return InlineComment(contents=p.INLINE_COMMENT, line=p.lineno)
 
     @_("MULTILINE_COMMENT")
     def instruction(self, p):
-        return MultilineComment(contents=p.MULTILINE_COMMENT)
+        return MultilineComment(contents=p.MULTILINE_COMMENT, line=p.lineno)
     
     @_("INT", "LONG", "SHORT", "FLOAT", "DOUBLE", "BOOLEAN", "CHAR", "STRINGTYPE", "VOID")
     def return_type(self, p):
@@ -196,23 +226,23 @@ class JavaParser(Parser):
        "expr AND expr", "expr OR expr", "expr EQEQ expr", "expr NEQ expr",
        "expr LT expr", "expr GT expr", "expr LE expr", "expr GE expr")
     def expr(self, p):
-        return BinaryOp(operation=p[1], op_left=p[0], op_right=p[2])
+        return BinaryOp(operation=p[1], op_left=p[0], op_right=p[2], line=p.lineno)
     
     @_("expr PLUSPLUS", "expr MINUSMINUS")
     def expr(self, p):
-        return ExprOp(operation=p[1], value=p[0])
+        return ExprOp(operation=p[1], value=p[0], line=p.lineno)
     
     @_("NOT expr")
     def expr(self, p):
-        return ExprOp(operation='!', value=p.expr)
+        return ExprOp(operation='!', value=p.expr, line=p.lineno)
     
     @_("'-' expr %prec UMINUS")
     def expr(self, p):
-        return ExprOp(operation='-', value=p.expr)
+        return ExprOp(operation='-', value=p.expr, line=p.lineno)
     
     @_("RETURN expr ';'")
     def instruction(self, p):
-        return Return(value=p.expr)
+        return Return(value=p.expr, line=p.lineno)
 
     @_("RETURN ';'")
     def instruction(self, p):
@@ -220,19 +250,19 @@ class JavaParser(Parser):
     
     @_("FOR '(' for_init ';' expr ';' expr ')' '{' instruction_list '}'")
     def instruction(self, p):
-        return For(initial=p.for_init, condition=p.expr0, update=p.expr1, body=p.instruction_list)
+        return For(initial=p.for_init, condition=p.expr0, update=p.expr1, body=p.instruction_list, line=p.lineno)
 
     @_("return_type ID '=' expr")
     def for_init(self, p):
-        return VariableDeclaration(type=p.return_type, name=p.ID, value=p.expr)
+        return VariableDeclaration(type=p.return_type, name=p.ID, value=p.expr, line=p.lineno)
 
     @_("expr")
     def for_init(self, p):
         return p.expr
     
-    @_("NEW return_type '[' ']' '{' array_items '}'")
+    @_("NEW return_type '{' array_items '}'")
     def expr(self, p):
-        return NewArray(type=p.return_type, items=p.array_items)
+        return NewArray(type=p.return_type, items=p.array_items, line=p.lineno)
     
     @_("array_items ',' expr")
     def array_items(self, p):
@@ -248,59 +278,63 @@ class JavaParser(Parser):
     
     @_("WHILE '(' expr ')' '{' instruction_list '}'")
     def instruction(self, p):
-        return While(condition=p.expr, body=p.instruction_list)
+        return While(condition=p.expr, body=p.instruction_list, line=p.lineno)
     
     @_("DO '{' instruction_list '}' WHILE '(' expr ')' ';'")
     def instruction(self, p):
-        return DoWhile(condition=p.expr, body=p.instruction_list)
+        return DoWhile(condition=p.expr, body=p.instruction_list, line=p.lineno)
     
     @_("INT_CONST")
     def expr(self, p):
-        return Int(value=p.INT_CONST)
+        return Int(value=p.INT_CONST, line=p.lineno)
     
     @_("FLOAT_CONST")
     def expr(self, p):
-        return Float(value=p.FLOAT_CONST)
+        return Float(value=p.FLOAT_CONST, line=p.lineno)
     
     @_("CHAR_CONST")
     def expr(self, p):
-        return Char(value=p.CHAR_CONST)
+        return Char(value=p.CHAR_CONST, line=p.lineno)
     
     @_("TRUE", "FALSE")
     def expr(self, p):
-        return Boolean(value=p[0])
+        return Boolean(value=p[0], line=p.lineno)
     
     @_("STR_CONST")
     def expr(self, p):
-        return String(value=p.STR_CONST)
+        return String(value=p.STR_CONST, line=p.lineno)
     
     @_("NULL")
     def expr(self, p):
-        return Null()
+        return Null(line=p.lineno)
 
     @_("ID")
     def expr(self, p):
-        return VarRef(name=p.ID)
+        return VarRef(name=p.ID, line=p.lineno)
     
     @_("ID '=' expr")
     def expr(self, p):
-        return Assign(name=p.ID, value=p.expr)
+        return Assign(name=p.ID, value=p.expr, line=p.lineno)
     
     @_("ID PLUSEQ expr", "ID MINUSEQ expr", "ID TIMESEQ expr", "ID DIVEQ expr", "ID MODEQ expr",)
     def expr(self, p):
-        return CompoundAssign(name=p.ID, value=p.expr, operator=p[1])
+        return CompoundAssign(name=p.ID, value=p.expr, operator=p[1], line=p.lineno)
     
     @_("return_type ID '=' expr ';'")
     def instruction(self, p):
-        return VariableDeclaration(type=p.return_type, name=p.ID, value=p.expr)
+        return VariableDeclaration(type=p.return_type, name=p.ID, value=p.expr, line=p.lineno)
 
     @_("return_type ID ';'")
     def instruction(self, p):
-        return VariableDeclaration(type=p.return_type, name=p.ID)
+        return VariableDeclaration(type=p.return_type, name=p.ID, line=p.lineno)
     
     @_("ID '.' ID '(' arg_list ')'")
     def expr(self, p):
-        return MethodCall(object=p[0], method_name=p[2], params=p.arg_list)
+        return MethodCall(object=p[0], method_name=p[2], params=p.arg_list, line=p.lineno)
+
+    @_("ID '(' arg_list ')'")
+    def expr(self, p):
+        return MethodCall(object='this', method_name=p.ID, params=p.arg_list, line=p.lineno)
     
     @_("expr")
     def arg_list(self, p):
@@ -318,7 +352,7 @@ class JavaParser(Parser):
     def expr(self, p):
         return p.expr
     
-    @_("INT '[' ']'", "LONG '[' ']'", "BOOLEAN '[' ']'", "CHAR '[' ']'",
-   "FLOAT '[' ']'", "DOUBLE '[' ']'", "STRINGTYPE '[' ']'", "ID '[' ']'")
+    @_("INT '[' ']'", "LONG '[' ']'", "BOOLEAN '[' ']'", "CHAR '[' ']'", "SHORT '[' ']'",
+       "FLOAT '[' ']'", "DOUBLE '[' ']'", "STRINGTYPE '[' ']'", "ID '[' ']'")
     def return_type(self, p):
         return p[0].lower() + '[]'

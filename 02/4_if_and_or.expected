@@ -1,4 +1,4 @@
-#0
+#1
 _program
   #1
   _class: Complicated
@@ -8,21 +8,21 @@ _program
     value:
       #2
       _boolean
-        True
+        true
     #3
     _field: b
     type: boolean
     value:
       #3
       _boolean
-        False
+        false
     #4
     _field: c
     type: boolean
     value:
       #4
       _boolean
-        True
+        true
     #6
     _method: complex
     return_type: boolean

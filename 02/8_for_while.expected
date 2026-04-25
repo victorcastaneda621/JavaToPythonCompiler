@@ -1,4 +1,4 @@
-#0
+#1
 _program
   #1
   _class: MoreNonsense
@@ -65,7 +65,7 @@ _program
       condition:
         #9
         _binaryOp:
-        operation: 
+        operation: <
         op_left:
           #9
           _varref: i

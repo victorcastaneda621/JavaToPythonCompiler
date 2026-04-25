@@ -1,1 +1,27 @@
-TODO:
+#1
+_program
+  #1
+  _class: AClass
+    #2
+    _method: doSomething
+    return_type: int
+      #3
+      _if
+      condition:
+        #3
+        _boolean
+          true
+      then:
+        #4
+        _return
+        value:
+          #4
+          _boolean
+            false
+      else:
+        #6
+        _return
+        value:
+          #6
+          _boolean
+            true

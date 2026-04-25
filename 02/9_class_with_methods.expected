@@ -1,4 +1,4 @@
-#0
+#1
 _program
   #1
   _class: foo
@@ -15,7 +15,7 @@ _program
     value:
       #3
       _boolean
-        True
+        true
     #4
     _method: qux
     return_type: boolean

@@ -1,4 +1,4 @@
-#0
+#1
 _program
   #1
   _class: foo
@@ -29,7 +29,7 @@ _program
     value:
       #5
       _boolean
-        True
+        true
     #6
     _field: pi
     type: float

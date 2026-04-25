@@ -1,103 +1,103 @@
-#0
-_program
 #1
-_class: EvenMoreNonsense
-#0
-_field: x
-type: int
-value:
-#0
-_int
-0
-#0
-_inline_comment
-contents: // Esto es un comentario de una linea
-#0
-_field: y
-type: int
-value:
-#0
-_int
-1
-#0
-_multiline_comment
-contents: /* Esto es un comentario multilinea
-Segunda linea
-Tercera linea
-linea 4
-FIN */
-#0
-_field: z
-type: int
-value:
-#0
-_binaryOp:
-operation: +
-op_left:
-#0
-_varref: x
-op_right:
-#0
-_varref: y
-#0
-_multiline_comment
-contents: /* x,y,z */
-#0
-_inline_comment
-contents: // /* Sigue siendo un comentario de una linea */
-#0
-_field: a
-type: char
-value:
-#0
-_char
-'a'
-#0
-_field: b
-type: string
-value:
-#0
-_string
-"abc"
-#0
-_multiline_comment
-contents: /* // Sigue siendo un comentario multilinea */
-#0
-_field: d
-type: string
-value:
-#0
-_string
-"ABC'"
-#0
-_field: comment
-type: string
-value:
-#0
-_string
-"// No es un comentario"
-#0
-_inline_comment
-contents: // int xy = x + y; es un comentario
-#0
-_field: comment2
-type: string
-value:
-#0
-_string
-"/* No es un comentario */"
-#0
-_multiline_comment
-contents: /* int xy = x + y;
-es un comentario
-*/
-#0
-_field: empty
-type: string
-value:
-#0
-_string
-""
-#0
-_multiline_comment
-contents: /* /* */
+_program
+  #1
+  _class: EvenMoreNonsense
+    #2
+    _field: x
+    type: int
+    value:
+      #2
+      _int
+        0
+    #3
+    _inline_comment
+    contents: // Esto es un comentario de una linea
+    #4
+    _field: y
+    type: int
+    value:
+      #4
+      _int
+        1
+    #5
+    _multiline_comment
+    contents: /* Esto es un comentario multilinea
+    Segunda linea
+    Tercera linea
+    linea 4
+        FIN */
+    #10
+    _field: z
+    type: int
+    value:
+      #10
+      _binaryOp:
+      operation: +
+      op_left:
+        #10
+        _varref: x
+      op_right:
+        #10
+        _varref: y
+    #11
+    _multiline_comment
+    contents: /* x,y,z */
+    #12
+    _inline_comment
+    contents: // /* Sigue siendo un comentario de una linea */
+    #13
+    _field: a
+    type: char
+    value:
+      #13
+      _char
+        'a'
+    #14
+    _field: b
+    type: string
+    value:
+      #14
+      _string
+        "abc"
+    #15
+    _multiline_comment
+    contents: /* // Sigue siendo un comentario multilinea */
+    #16
+    _field: d
+    type: string
+    value:
+      #16
+      _string
+        "ABC'"
+    #17
+    _field: comment
+    type: string
+    value:
+      #17
+      _string
+        "// No es un comentario"
+    #18
+    _inline_comment
+    contents: // int xy = x + y; es un comentario
+    #19
+    _field: comment2
+    type: string
+    value:
+      #19
+      _string
+        "/* No es un comentario */"
+    #20
+    _multiline_comment
+    contents: /* int xy = x + y; 
+    es un comentario 
+    */
+    #22
+    _field: empty
+    type: string
+    value:
+      #22
+      _string
+        ""
+    #23
+    _multiline_comment
+    contents: /* /* */

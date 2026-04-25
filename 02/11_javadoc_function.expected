@@ -1,4 +1,4 @@
-#0
+#1
 _program
   #1
   _class: classA
@@ -11,7 +11,7 @@ _program
         0
     #3
     _field: str
-    type: String
+    type: string
     value:
       #3
       _null
@@ -37,22 +37,38 @@ _program
         _int
           1
     #12
-    PARSE ERROR: int[] array (arrays not supported)
+    _field: array
+    type: int[]
+    value:
+      #12
+      _newarray
+      type: int[]
+      items:
+        #12
+        _int
+          1
+        #12
+        _int
+          2
+        #12
+        _int
+          3
     #13
-    PARSE ERROR: int[] empty (arrays not supported)
+    _field: empty
+    type: int[]
+    value:
+      #13
+      _newarray
+      type: int[]
+      items:
     #15
-    _javadoc
-    contents: /**
-     * This is a javadoc for classB.
-     * @param a Is a param of type classA.
-     */
-    #19
     _method: classB
-    return_type: classA
-    PARSE ERROR: missing return type / visibility mismatch
+    return_type: None
+      #19
+      _param: a
+      type: classA
       #20
       _assign: param
       value:
         #20
-        _methodCall: get_x
-        object: a
+        _methodCall: a.get_x

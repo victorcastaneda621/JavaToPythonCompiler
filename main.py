@@ -3,7 +3,7 @@ import re
 import sys
 from java_lexer import JavaLexer
 from java_parser import JavaParser
-#from Clases import *
+from translator import Translator
 
 PHASE = "02"
 
@@ -17,10 +17,11 @@ JAVA_FILES = [file for file in os.listdir(TEST_DIR)
 
 lexer = JavaLexer()
 parser = JavaParser()
+translator = Translator()
 
 tests = {}
 expected_results = {}
-for filename in ["1_keywords.java"]:
+for filename in JAVA_FILES:
     with open(os.path.join(TEST_DIR, filename), "r", encoding="utf-8") as f:
         java_file = f.read()
     with open(os.path.join(TEST_DIR, filename).replace(".java", ".expected"), "r", encoding="utf-8") as f:
@@ -43,30 +44,51 @@ for filename in ["1_keywords.java"]:
         else:
             print(f" - file {filename} (CORRECT)")
 
-    elif PHASE in ('02', '03'): # Parser or Translator/Evaluator
+    elif PHASE == '02': # Parser
         tokens = lexer.tokenize(java_file)
         parser.errors = []
         ast = parser.parse(tokens)
-        print(f"AST: {ast}")
-        print(f"Errors: {parser.errors}")
     
         if parser.errors:
             result = '\n'.join(parser.errors)
             print(f"ERROR in file {filename}")
             with open(os.path.join(TEST_DIR, filename)+'.out', 'w', encoding="utf-8") as output:
-                output.write(result.strip())
+                output.write(result)
         else:
-            result = ast.str(0)  # AST pretty-printed, we'll define this
-            out_file = [line.strip() for line in result.split('\n') if line.strip()]
-            expected_file_lines = [line.strip() for line in expected_file.split('\n') if line.strip()]
+            result = ast.str(0)
+            out_file = [line for line in result.split('\n') if line]
+            expected_file_lines = [line for line in expected_file.split('\n') if line]
             out_file_str = '\n'.join(out_file)
             expected_str = '\n'.join(expected_file_lines)
             
             if expected_str.strip().split() != out_file_str.strip().split():
                 print(f"ERROR in file {filename}")
                 with open(os.path.join(TEST_DIR, filename)+'.out', 'w', encoding="utf-8") as output:
-                    output.write(out_file_str.strip())
+                    output.write(out_file_str)
             else:
                 print(f" - file {filename} (CORRECT)")
+    elif PHASE == "03": # Translator/Evaluator
+        tokens = lexer.tokenize(java_file)
+        parser.errors = []
+        ast = parser.parse(tokens)
 
+        if parser.errors:
+            result = '\n'.join(parser.errors)
+            print(f"ERROR in file {filename}")
+            with open(os.path.join(TEST_DIR, filename) + '.py', 'w', encoding="utf-8") as output:
+                output.write(result)
+        else:
+            translated_output = translator.translate(ast)
 
+            out_file_lines = [line.strip() for line in str(translated_output).split('\n') if line.strip()]
+            expected_file_lines = [line.strip() for line in expected_file.split('\n') if line.strip()]
+            
+            out_str = '\n'.join(out_file_lines)
+            expected_str = '\n'.join(expected_file_lines)
+
+            if expected_str.strip().split() != out_str.strip().split():
+                print(f"ERROR in file {filename}")
+                with open(os.path.join(TEST_DIR, filename) + '.py', 'w', encoding="utf-8") as output:
+                    output.write(out_str)
+            else:
+                print(f" - file {filename} (CORRECT)")

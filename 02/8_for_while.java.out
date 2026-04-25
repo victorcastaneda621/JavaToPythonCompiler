@@ -1,131 +1,131 @@
-#0
-_program
 #1
-_class: MoreNonsense
-#0
-_field: MAX_ITER
-type: int
-value:
-#0
-_int
-3
-#0
-_method: nonsenseFunc
-return_type: void
-#0
-_var: res
-type: int
-value:
-#0
-_varref: MAX_ITER
-#0
-_for
-initial:
-#0
-_var: i
-type: int
-value:
-#0
-_int
-0
-condition:
-#0
-_binaryOp:
-operation: <=
-op_left:
-#0
-_varref: i
-op_right:
-#0
-_varref: MAX_ITER
-update:
-#0
-_exprOp:
-operation: ++
-value:
-#0
-_varref: i
-body:
-#0
-_cassign: res
-operator: +=
-value:
-#0
-_int
-1
-#0
-_for
-initial:
-#0
-_var: i
-type: int
-value:
-#0
-_varref: MAX_ITER
-condition:
-#0
-_binaryOp:
-operation: <
-op_left:
-#0
-_varref: i
-op_right:
-#0
-_int
-0
-update:
-#0
-_exprOp:
-operation: --
-value:
-#0
-_varref: i
-body:
-#0
-_cassign: res
-operator: +=
-value:
-#0
-_int
-1
-#0
-_while
-condition:
-#0
-_binaryOp:
-operation: >
-op_left:
-#0
-_varref: res
-op_right:
-#0
-_int
-0
-body:
-#0
-_cassign: res
-operator: -=
-value:
-#0
-_int
-1
-#0
-_dowhile
-body:
-#0
-_cassign: res
-operator: +=
-value:
-#0
-_int
-1
-condition:
-#0
-_binaryOp:
-operation: >=
-op_left:
-#0
-_varref: res
-op_right:
-#0
-_varref: MAX_ITER
+_program
+  #1
+  _class: MoreNonsense
+    #2
+    _field: MAX_ITER
+    type: int
+    value:
+      #2
+      _int
+        3
+    #4
+    _method: nonsenseFunc
+    return_type: void
+      #5
+      _var: res
+      type: int
+      value:
+        #5
+        _varref: MAX_ITER
+      #6
+      _for
+      initial:
+        #6
+        _var: i
+        type: int
+        value:
+          #6
+          _int
+            0
+      condition:
+        #6
+        _binaryOp:
+        operation: <=
+        op_left:
+          #6
+          _varref: i
+        op_right:
+          #6
+          _varref: MAX_ITER
+      update:
+        #6
+        _exprOp:
+        operation: ++
+        value:
+          #6
+          _varref: i
+      body:
+        #7
+        _cassign: res
+        operator: +=
+        value:
+          #7
+          _int
+            1
+      #9
+      _for
+      initial:
+        #9
+        _var: i
+        type: int
+        value:
+          #9
+          _varref: MAX_ITER
+      condition:
+        #9
+        _binaryOp:
+        operation: <
+        op_left:
+          #9
+          _varref: i
+        op_right:
+          #9
+          _int
+            0
+      update:
+        #9
+        _exprOp:
+        operation: --
+        value:
+          #9
+          _varref: i
+      body:
+        #10
+        _cassign: res
+        operator: +=
+        value:
+          #10
+          _int
+            1
+      #12
+      _while
+      condition:
+        #12
+        _binaryOp:
+        operation: >
+        op_left:
+          #12
+          _varref: res
+        op_right:
+          #12
+          _int
+            0
+      body:
+        #13
+        _cassign: res
+        operator: -=
+        value:
+          #13
+          _int
+            1
+      #15
+      _dowhile
+      body:
+        #16
+        _cassign: res
+        operator: +=
+        value:
+          #16
+          _int
+            1
+      condition:
+        #17
+        _binaryOp:
+        operation: >=
+        op_left:
+          #17
+          _varref: res
+        op_right:
+          #17
+          _varref: MAX_ITER

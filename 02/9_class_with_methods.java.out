@@ -1,1 +1,52 @@
-"", line 6: syntax error at or near ';'
+#1
+_program
+  #1
+  _class: foo
+    #2
+    _field: bar
+    type: int
+    value:
+      #2
+      _int
+        0
+    #3
+    _field: baz
+    type: boolean
+    value:
+      #3
+      _boolean
+        true
+    #4
+    _method: qux
+    return_type: boolean
+      #4
+      _param: other_bar
+      type: int
+      #5
+      _if
+      condition:
+        #5
+        _binaryOp:
+        operation: !=
+        op_left:
+          #5
+          _varref: bar
+        op_right:
+          #5
+          _varref: other_bar
+      then:
+        #6
+        _return
+        value:
+          #6
+          _varref: baz
+      else:
+      #8
+      _return
+      value:
+        #8
+        _exprOp:
+        operation: !
+        value:
+          #8
+          _varref: baz

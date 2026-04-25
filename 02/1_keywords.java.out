@@ -1,48 +1,48 @@
-#0
-_program
 #1
-_class: AClass
-#0
-_method: doSomething
-return_type: int
-#0
-_param: x
-type: int
-#0
-_param: y
-type: int
-#0
-_param: z
-type: boolean
-#0
-_var: res
-type: int
-value:
-#0
-_int
-0
-#0
-_if
-condition:
-#0
-_varref: z
-then:
-#0
-_return
-value:
-#0
-_varref: y
-else:
-#0
-_return
-value:
-#0
-_binaryOp:
-operation: *
-op_left:
-#0
-_int
-2
-op_right:
-#0
-_varref: x
+_program
+  #1
+  _class: AClass
+    #2
+    _method: doSomething
+    return_type: int
+      #2
+      _param: x
+      type: int
+      #2
+      _param: y
+      type: int
+      #2
+      _param: z
+      type: boolean
+      #3
+      _var: res
+      type: int
+      value:
+        #3
+        _int
+          0
+      #4
+      _if
+      condition:
+        #4
+        _varref: z
+      then:
+        #5
+        _return
+        value:
+          #5
+          _varref: y
+      else:
+        #7
+        _return
+        value:
+          #7
+          _binaryOp:
+          operation: *
+          op_left:
+            #7
+            _int
+              2
+          op_right:
+            #7
+            _varref: x

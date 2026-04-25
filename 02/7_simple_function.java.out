@@ -1,1 +1,67 @@
-"", line 3: syntax error at or near ';'
+#1
+_program
+  #1
+  _class: Funcs
+    #2
+    _method: func
+    return_type: int
+      #3
+      _return
+      value:
+        #3
+        _int
+          3
+    #6
+    _method: func2
+    return_type: void
+      #6
+      _param: x
+      type: int
+      #6
+      _param: y
+      type: int
+      #7
+      _cassign: x
+      operator: +=
+      value:
+        #7
+        _varref: y
+    #10
+    _method: func3
+    return_type: double
+      #10
+      _param: bool_value
+      type: boolean
+      #11
+      _var: res
+      type: double
+      value:
+        #11
+        _float
+          0.0
+      #12
+      _if
+      condition:
+        #12
+        _varref: bool_value
+      then:
+        #13
+        _cassign: res
+        operator: +=
+        value:
+          #13
+          _float
+            1.0
+      else:
+        #15
+        _cassign: res
+        operator: +=
+        value:
+          #15
+          _float
+            0.0
+      #17
+      _return
+      value:
+        #17
+        _varref: res
