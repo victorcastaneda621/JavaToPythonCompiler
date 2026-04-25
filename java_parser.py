@@ -7,6 +7,14 @@ class JavaParser(Parser):
 
     # Precedencia de operadores de menor a mayor para resolver ambigüedades
     precedence = (
+        ('left', 'OR'),
+        ('left', 'AND'),
+        ('left', 'EQEQ', 'NEQ'),
+        ('left', 'LT', 'GT', 'LE', 'GE'),
+        ('left', '+', '-'),
+        ('left', '*', '/', '%'),
+        ('right', 'NOT'),
+        ('right', 'UMINUS'),
     )
 
     def __init__(self):
@@ -133,6 +141,14 @@ class JavaParser(Parser):
     def instruction(self, p):
         return p.expr
     
+    @_("IF '(' expr ')' '{' instruction_list '}'", 
+    "IF '(' expr ')' '{' instruction_list '}' ELSE '{' instruction_list '}'",
+    "IF '(' expr ')' '{' instruction_list '}' ELSE instruction")
+    def instruction(self, p):
+        if p.instruction_list1:
+            return Conditional(condition=p.expr, then_do=p.instruction_list0, else_do=p.instruction_list1)
+        return Conditional(condition=p.expr, then_do=p.instruction_list)
+    
     @_("INLINE_COMMENT")
     def instruction(self, p):
         return InlineComment(contents=p.INLINE_COMMENT)
@@ -161,10 +177,6 @@ class JavaParser(Parser):
     def param_list(self, p):
         return []
     
-    @_("instruction")
-    def instruction_list(self, p):
-        return [p.instruction]
-    
     @_("instruction_list instruction")
     def instruction_list(self, p):
         return p.instruction_list + [p.instruction]
@@ -172,3 +184,57 @@ class JavaParser(Parser):
     @_("")
     def instruction_list(self, p):
         return []
+    
+    @_("expr '+' expr", "expr '-' expr", "expr '*' expr", "expr '/' expr", "expr '%' expr", 
+       "expr AND expr", "expr OR expr", "expr EQEQ expr", "expr NEQ expr",
+       "expr LT expr", "expr GT expr", "expr LE expr", "expr GE expr")
+    def expr(self, p):
+        return BinaryOp(operation=p[1], op_left=p[0], op_right=p[2])
+    
+    @_("expr PLUSPLUS", "expr MINUSMINUS")
+    def expr(self, p):
+        return ExprOp(operation=p[1], value=p[0])
+    
+    @_("NOT expr")
+    def expr(self, p):
+        return ExprOp(operation='!', value=p.expr)
+    
+    @_("'-' expr %prec UMINUS")
+    def expr(self, p):
+        return ExprOp(operation='-', value=p.expr)
+    
+    @_("RETURN expr")
+    def instruction(self, p):
+        return Return(value=p.expr)
+    
+    @_("FOR '(' expr ';' expr ';' expr ')' '{' instruction_list '}'")
+    def instruction(self, p):
+        return For(initial=p[2], condition=p[4], update=p[6], body=p.instruction_list)
+    
+    @_("WHILE '(' expr ')' '{' instruction_list '}'")
+    def instruction(self, p):
+        return While(condition=p.expr, body=p.instruction_list)
+    
+    @_("DO '{' instruction_list '}' WHILE '(' expr ')' ';'")
+    def instruction(self, p):
+        return DoWhile(condition=p.expr, body=p.instruction_list)
+    
+    @_("INT_CONST")
+    def expr(self, p):
+        return Int(value=p.INT_CONST)
+    
+    @_("FLOAT_CONST")
+    def expr(self, p):
+        return Float(value=p.FLOAT_CONST)
+    
+    @_("CHAR_CONST")
+    def expr(self, p):
+        return Char(value=p.CHAR_CONST)
+    
+    @_("TRUE", "FALSE")
+    def expr(self, p):
+        return Boolean(value=p[0])
+    
+    @_("NULL")
+    def expr(self, p):
+        return Null()
