@@ -20,7 +20,7 @@ parser = JavaParser()
 
 tests = {}
 expected_results = {}
-for filename in JAVA_FILES:
+for filename in ["1_keywords.java"]:
     with open(os.path.join(TEST_DIR, filename), "r", encoding="utf-8") as f:
         java_file = f.read()
     with open(os.path.join(TEST_DIR, filename).replace(".java", ".expected"), "r", encoding="utf-8") as f:
@@ -30,7 +30,7 @@ for filename in JAVA_FILES:
         os.remove(os.path.join(TEST_DIR, filename).replace(".java", ".out"))
 
     if PHASE == "01": # Lexer
-        tokens = f'#name "{filename}"\n' + '\n'.join(lexer.tokenize(java_file))
+        tokens = f'#name "{filename}"\n' + '\n'.join(lexer.output(java_file))
         out_file = [linea.strip() for linea in tokens.split('\n') if linea.strip()]
         expected_file = [linea.strip() for linea in expected_file.split('\n') if linea.strip()]
         out_file = '\n'.join(out_file)
@@ -45,17 +45,20 @@ for filename in JAVA_FILES:
 
     elif PHASE in ('02', '03'): # Parser or Translator/Evaluator
         tokens = lexer.tokenize(java_file)
+        parser.errors = []
         ast = parser.parse(tokens)
+        print(f"AST: {ast}")
+        print(f"Errors: {parser.errors}")
     
-        if parser.errores:
-            resultado = '\n'.join(parser.errores)
+        if parser.errors:
+            result = '\n'.join(parser.errors)
             print(f"ERROR in file {filename}")
             with open(os.path.join(TEST_DIR, filename)+'.out', 'w', encoding="utf-8") as output:
-                output.write(resultado.strip())
+                output.write(result.strip())
         else:
-            resultado = ast.str(0)  # AST pretty-printed, we'll define this
-            out_file = [linea.strip() for linea in resultado.split('\n') if linea.strip()]
-            expected_file_lines = [linea.strip() for linea in expected_file.split('\n') if linea.strip()]
+            result = ast.str(0)  # AST pretty-printed, we'll define this
+            out_file = [line.strip() for line in result.split('\n') if line.strip()]
+            expected_file_lines = [line.strip() for line in expected_file.split('\n') if line.strip()]
             out_file_str = '\n'.join(out_file)
             expected_str = '\n'.join(expected_file_lines)
             

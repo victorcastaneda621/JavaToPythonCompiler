@@ -1,0 +1,131 @@
+#0
+_program
+#1
+_class: MoreNonsense
+#0
+_field: MAX_ITER
+type: int
+value:
+#0
+_int
+3
+#0
+_method: nonsenseFunc
+return_type: void
+#0
+_var: res
+type: int
+value:
+#0
+_varref: MAX_ITER
+#0
+_for
+initial:
+#0
+_var: i
+type: int
+value:
+#0
+_int
+0
+condition:
+#0
+_binaryOp:
+operation: <=
+op_left:
+#0
+_varref: i
+op_right:
+#0
+_varref: MAX_ITER
+update:
+#0
+_exprOp:
+operation: ++
+value:
+#0
+_varref: i
+body:
+#0
+_cassign: res
+operator: +=
+value:
+#0
+_int
+1
+#0
+_for
+initial:
+#0
+_var: i
+type: int
+value:
+#0
+_varref: MAX_ITER
+condition:
+#0
+_binaryOp:
+operation: <
+op_left:
+#0
+_varref: i
+op_right:
+#0
+_int
+0
+update:
+#0
+_exprOp:
+operation: --
+value:
+#0
+_varref: i
+body:
+#0
+_cassign: res
+operator: +=
+value:
+#0
+_int
+1
+#0
+_while
+condition:
+#0
+_binaryOp:
+operation: >
+op_left:
+#0
+_varref: res
+op_right:
+#0
+_int
+0
+body:
+#0
+_cassign: res
+operator: -=
+value:
+#0
+_int
+1
+#0
+_dowhile
+body:
+#0
+_cassign: res
+operator: +=
+value:
+#0
+_int
+1
+condition:
+#0
+_binaryOp:
+operation: >=
+op_left:
+#0
+_varref: res
+op_right:
+#0
+_varref: MAX_ITER

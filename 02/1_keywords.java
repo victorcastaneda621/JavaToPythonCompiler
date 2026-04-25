@@ -1,17 +1,10 @@
-If;
-if;
-iF;
-IF;
-else;
-elsE;
-Else;
-ELSE;
-eLSe;
-true;
-True;
-tRUe;
-TrUe;
-false;
-False;
-fALse;
-falsE;
+public class AClass {
+    public static int doSomething(int x, int y, boolean z) {
+        int res = 0;
+        if (z) {
+            return y;
+        } else {
+            return 2 * x;
+        }
+    }
+}

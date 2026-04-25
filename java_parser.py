@@ -5,7 +5,7 @@ from classes import *
 class JavaParser(Parser):
     tokens = JavaLexer.tokens
 
-    # Precedencia de operadores de menor a mayor para resolver ambigüedades
+    # Operator precedence
     precedence = (
         ('left', 'OR'),
         ('left', 'AND'),
@@ -15,7 +15,10 @@ class JavaParser(Parser):
         ('left', '*', '/', '%'),
         ('right', 'NOT'),
         ('right', 'UMINUS'),
+        ('right', 'INT', 'LONG', 'SHORT', 'FLOAT', 'DOUBLE', 'BOOLEAN', 'CHAR', 'STRINGTYPE', 'VOID')
     )
+
+    debugfile = 'parser.out'
 
     def __init__(self):
         self.filename = ""
@@ -151,7 +154,7 @@ class JavaParser(Parser):
     
     @_("IF '(' expr ')' '{' instruction_list '}' ELSE instruction")
     def instruction(self, p):
-        return Conditional(condition=p.expr, then_do=p.instruction_list0, else_do=p.instruction)
+        return Conditional(condition=p.expr, then_do=p.instruction_list, else_do=p.instruction)
     
     @_("INLINE_COMMENT")
     def instruction(self, p):
@@ -207,15 +210,41 @@ class JavaParser(Parser):
     def expr(self, p):
         return ExprOp(operation='-', value=p.expr)
     
-    @_("RETURN expr", "RETURN ';'")
+    @_("RETURN expr ';'")
     def instruction(self, p):
-        if p.expr:
-            return Return(value=p.expr)
+        return Return(value=p.expr)
+
+    @_("RETURN ';'")
+    def instruction(self, p):
         return Return()
     
-    @_("FOR '(' expr ';' expr ';' expr ')' '{' instruction_list '}'")
+    @_("FOR '(' for_init ';' expr ';' expr ')' '{' instruction_list '}'")
     def instruction(self, p):
-        return For(initial=p[2], condition=p[4], update=p[6], body=p.instruction_list)
+        return For(initial=p.for_init, condition=p.expr0, update=p.expr1, body=p.instruction_list)
+
+    @_("return_type ID '=' expr")
+    def for_init(self, p):
+        return VariableDeclaration(type=p.return_type, name=p.ID, value=p.expr)
+
+    @_("expr")
+    def for_init(self, p):
+        return p.expr
+    
+    @_("NEW return_type '[' ']' '{' array_items '}'")
+    def expr(self, p):
+        return NewArray(type=p.return_type, items=p.array_items)
+    
+    @_("array_items ',' expr")
+    def array_items(self, p):
+        return p.array_items + [p.expr]
+
+    @_("expr")
+    def array_items(self, p):
+        return [p.expr]
+
+    @_("")
+    def array_items(self, p):
+        return []
     
     @_("WHILE '(' expr ')' '{' instruction_list '}'")
     def instruction(self, p):
@@ -261,10 +290,12 @@ class JavaParser(Parser):
     def expr(self, p):
         return CompoundAssign(name=p.ID, value=p.expr, operator=p[1])
     
-    @_("return_type ID '=' expr", "return_type ID ';'")
+    @_("return_type ID '=' expr ';'")
     def instruction(self, p):
-        if p.expr:
-            return VariableDeclaration(type=p.return_type, name=p.ID, value=p.expr)
+        return VariableDeclaration(type=p.return_type, name=p.ID, value=p.expr)
+
+    @_("return_type ID ';'")
+    def instruction(self, p):
         return VariableDeclaration(type=p.return_type, name=p.ID)
     
     @_("ID '.' ID '(' arg_list ')'")
@@ -286,3 +317,8 @@ class JavaParser(Parser):
     @_("'(' expr ')'")
     def expr(self, p):
         return p.expr
+    
+    @_("INT '[' ']'", "LONG '[' ']'", "BOOLEAN '[' ']'", "CHAR '[' ']'",
+   "FLOAT '[' ']'", "DOUBLE '[' ']'", "STRINGTYPE '[' ']'", "ID '[' ']'")
+    def return_type(self, p):
+        return p[0].lower() + '[]'

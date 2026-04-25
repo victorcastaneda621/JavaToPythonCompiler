@@ -89,10 +89,10 @@ class Conditional(Expr):
         res += f'{" "*n}condition:\n'
         res += self.condition.str(n+2)
         res += f'{" "*n}then:\n'
-        res += self.then_do.str(n+2)
+        res += ''.join([s.str(n+2) for s in self.then_do])
         res += f'{" "*n}else:\n'
         if self.else_do:
-            res += self.else_do.str(n+2)
+            res += ''.join([s.str(n+2) for s in self.else_do])
         return res
 
 @dataclass
@@ -312,4 +312,16 @@ class MethodCall(Expr):
         res = super().str(n)
         res += f'{" "*n}_methodCall: {self.object}.{self.method_name}\n'
         res += ''.join([p.str(n+2) for p in self.params])
+        return res
+    
+@dataclass
+class NewArray(Expr):
+    type: str = '_no_set'
+    items: List = field(default_factory=list)
+    def str(self, n):
+        res = super().str(n)
+        res += f'{" "*n}_newarray\n'
+        res += f'{" "*n}type: {self.type}\n'
+        res += f'{" "*n}items:\n'
+        res += ''.join([i.str(n+2) for i in self.items])
         return res

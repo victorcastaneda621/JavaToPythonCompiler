@@ -1,0 +1,46 @@
+#0
+_program
+#1
+_class: foo
+#0
+_field: s
+type: short
+value:
+#0
+_int
+1
+#0
+_field: x
+type: int
+value:
+#0
+_int
+10
+#0
+_field: xl
+type: long
+value:
+#0
+_int
+100L
+#0
+_field: maybe
+type: boolean
+value:
+#0
+_boolean
+true
+#0
+_field: pi
+type: float
+value:
+#0
+_float
+3.14f
+#0
+_field: pi_double
+type: double
+value:
+#0
+_float
+3.14159

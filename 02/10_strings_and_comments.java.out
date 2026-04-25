@@ -1,0 +1,103 @@
+#0
+_program
+#1
+_class: EvenMoreNonsense
+#0
+_field: x
+type: int
+value:
+#0
+_int
+0
+#0
+_inline_comment
+contents: // Esto es un comentario de una linea
+#0
+_field: y
+type: int
+value:
+#0
+_int
+1
+#0
+_multiline_comment
+contents: /* Esto es un comentario multilinea
+Segunda linea
+Tercera linea
+linea 4
+FIN */
+#0
+_field: z
+type: int
+value:
+#0
+_binaryOp:
+operation: +
+op_left:
+#0
+_varref: x
+op_right:
+#0
+_varref: y
+#0
+_multiline_comment
+contents: /* x,y,z */
+#0
+_inline_comment
+contents: // /* Sigue siendo un comentario de una linea */
+#0
+_field: a
+type: char
+value:
+#0
+_char
+'a'
+#0
+_field: b
+type: string
+value:
+#0
+_string
+"abc"
+#0
+_multiline_comment
+contents: /* // Sigue siendo un comentario multilinea */
+#0
+_field: d
+type: string
+value:
+#0
+_string
+"ABC'"
+#0
+_field: comment
+type: string
+value:
+#0
+_string
+"// No es un comentario"
+#0
+_inline_comment
+contents: // int xy = x + y; es un comentario
+#0
+_field: comment2
+type: string
+value:
+#0
+_string
+"/* No es un comentario */"
+#0
+_multiline_comment
+contents: /* int xy = x + y;
+es un comentario
+*/
+#0
+_field: empty
+type: string
+value:
+#0
+_string
+""
+#0
+_multiline_comment
+contents: /* /* */

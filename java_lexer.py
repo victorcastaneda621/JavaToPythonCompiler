@@ -166,13 +166,13 @@ class JavaLexer(Lexer):
         self.index += 1
         return t
 
-    def handle_eof(self, text, *args, **kwargs):
+    def tokenize(self, text, *args, **kwargs):
         for tok in super().tokenize(text, *args, **kwargs):
             yield tok
 
-    def tokenize(self, text):
+    def output(self, text):
         list_strings = []
-        for token in self.handle_eof(text): 
+        for token in self.tokenize(text): 
             result = f'#{token.lineno} {token.type} '
             
             if token.type == 'ID':
