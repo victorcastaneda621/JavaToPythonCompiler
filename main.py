@@ -75,20 +75,20 @@ for filename in JAVA_FILES:
         if parser.errors:
             result = '\n'.join(parser.errors)
             print(f"ERROR in file {filename}")
-            with open(os.path.join(TEST_DIR, filename) + '.py', 'w', encoding="utf-8") as output:
+            with open(os.path.join(TEST_DIR, filename).strip(".java") + '.py', 'w', encoding="utf-8") as output:
                 output.write(result)
         else:
             translated_output = translator.translate(ast)
 
-            out_file_lines = [line.strip() for line in str(translated_output).split('\n') if line.strip()]
-            expected_file_lines = [line.strip() for line in expected_file.split('\n') if line.strip()]
+            out_file_lines = [line for line in str(translated_output).split('\n') if line]
+            expected_file_lines = [line for line in expected_file.split('\n') if line]
             
             out_str = '\n'.join(out_file_lines)
             expected_str = '\n'.join(expected_file_lines)
 
             if expected_str.strip().split() != out_str.strip().split():
                 print(f"ERROR in file {filename}")
-                with open(os.path.join(TEST_DIR, filename) + '.py', 'w', encoding="utf-8") as output:
+                with open(os.path.join(TEST_DIR, filename).strip(".java") + '.py', 'w', encoding="utf-8") as output:
                     output.write(out_str)
             else:
                 print(f" - file {filename} (CORRECT)")
