@@ -334,6 +334,22 @@ class JavaParser(Parser):
     def expr(self, p):
         return MethodCall(object='this', method_name=p.ID, params=p.arg_list, line=p.lineno)
     
+    @_("THIS '.' ID")
+    def expr(self, p):
+        return VarRef(name=f"this.{p.ID}", line=p.lineno)
+
+    @_("THIS '.' ID '(' arg_list ')'")
+    def expr(self, p):
+        return MethodCall(object="this", method_name=p.ID, params=p.arg_list, line=p.lineno)
+    
+    @_("THIS '.' ID '=' expr")
+    def expr(self, p):
+        return Assign(name=f"this.{p.ID}", value=p.expr, line=p.lineno)
+
+    @_("THIS '.' ID PLUSEQ expr", "THIS '.' ID MINUSEQ expr")
+    def expr(self, p):
+        return CompoundAssign(name=f"this.{p.ID}", value=p.expr, operator=p[3], line=p.lineno)
+    
     @_("expr")
     def arg_list(self, p):
         return [p.expr]

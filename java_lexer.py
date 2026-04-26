@@ -8,7 +8,7 @@ class JavaLexer(Lexer):
         PLUSEQ, MINUSEQ, TIMESEQ, DIVEQ, MODEQ,
         INT_CONST, FLOAT_CONST, CHAR_CONST, STR_CONST,
         PLUSPLUS, MINUSMINUS,
-        PUBLIC, PRIVATE, VOID, NULL, NEW,
+        PUBLIC, PRIVATE, VOID, NULL, NEW, THIS,
         LE, LT, GE, GT, NEQ, NOT,
         INLINE_COMMENT, MULTILINE_COMMENT, JAVADOC, STRINGTYPE, CHAR,
         SHORT, INT, LONG, BOOLEAN, FLOAT, DOUBLE,
@@ -23,7 +23,7 @@ class JavaLexer(Lexer):
                 "return", "class", "static",
                 "else", "if", "true", "false",
                 "short", "int", "long", "boolean", "float", "double", "char", "String",
-                "public", "private", "void", "null", "new",
+                "public", "private", "void", "null", "new", "this",
                 "for", "while", "do"
                 }
     

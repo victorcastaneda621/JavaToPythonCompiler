@@ -1,4 +1,5 @@
 class AClass:
+
     @staticmethod
     def doSomething(x: int, y: int, z: bool):
         res = 0

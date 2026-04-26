@@ -1,0 +1,15 @@
+class Funcs:
+    
+    def func(self):
+        return 3
+    
+    def func2(self, x: int, y: int):
+        x += y
+    
+    def func3(self, bool_value: bool):
+        res = 0.0
+        if bool_value:
+            res += 1.0
+        else:
+            res += 0.0
+        return res

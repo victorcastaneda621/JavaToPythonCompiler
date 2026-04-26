@@ -4,6 +4,7 @@ import sys
 from java_lexer import JavaLexer
 from java_parser import JavaParser
 from translator import Translator
+from scope import Scope
 
 PHASE = "03"
 
@@ -18,6 +19,7 @@ JAVA_FILES = [file for file in os.listdir(TEST_DIR)
 lexer = JavaLexer()
 parser = JavaParser()
 translator = Translator()
+scope = Scope()
 
 tests = {}
 expected_results = {}
@@ -74,11 +76,11 @@ for filename in JAVA_FILES:
 
         if parser.errors:
             result = '\n'.join(parser.errors)
-            print(f"ERROR in file {filename}")
+            print(f"PARSER ERROR in file {filename}")
             with open(os.path.join(TEST_DIR, filename).strip(".java") + '.py', 'w', encoding="utf-8") as output:
                 output.write(result)
         else:
-            translated_output = translator.translate(ast)
+            translated_output = translator.translate_initial(ast, scope)
 
             out_file_lines = [line for line in str(translated_output).split('\n') if line]
             expected_file_lines = [line for line in expected_file.split('\n') if line]
@@ -88,7 +90,7 @@ for filename in JAVA_FILES:
 
             if expected_str.strip().split() != out_str.strip().split():
                 print(f"ERROR in file {filename}")
-                with open(os.path.join(TEST_DIR, filename).strip(".java") + '.py', 'w', encoding="utf-8") as output:
-                    output.write(out_str)
             else:
                 print(f" - file {filename} (CORRECT)")
+            with open(os.path.join(TEST_DIR, filename).strip(".java") + '.py', 'w', encoding="utf-8") as output:
+                output.write(out_str)

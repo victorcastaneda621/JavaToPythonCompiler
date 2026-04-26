@@ -4,14 +4,14 @@ class Complicated:
     c = True
 
     def complex(self):
-        if (self.a and self.b):
+        if self.a and self.b:
             return self.a and self.b
         elif self.a or self.b:
             return self.a or self.b
-        elif self.a or self.b or self.c:
+        elif self.a or self.b and self.c:
             return self.a or self.b and self.c
-        elif ((self.a or self.c) and (self.b or self.c)):
-            return ((self.a or self.c) and (self.b or self.c))
+        elif (self.a or self.c) and (self.b or self.c):
+            return (self.a or self.c) and (self.b or self.c)
         elif self.a or (self.b or self.c):
             return self.a or (self.b or self.c)
         else:

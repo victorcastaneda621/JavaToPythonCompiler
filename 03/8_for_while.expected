@@ -1,0 +1,15 @@
+class MoreNonsense:
+    MAX_ITER = 3
+
+    def nonsenseFunc(self):
+        res = self.MAX_ITER
+        for i in range(0, self.MAX_ITER + 1, 1):
+            res += 1
+        for i in range(self.MAX_ITER, 0, -1):
+            res += 1
+        while res > 0:
+            res -= 1
+        while True:
+            res += 1
+            if not (res >= self.MAX_ITER):
+                break

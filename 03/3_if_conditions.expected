@@ -1,4 +1,5 @@
 class AClass:
+
     @staticmethod
     def doSomething():   
         if True:
