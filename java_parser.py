@@ -36,9 +36,29 @@ class JavaParser(Parser):
         else:
             self.errors.append(f'"{self.filename}", line 0: syntax error at or near EOF')
 
-    @_("class_list")
+    @_("import_list class_list")
     def program(self, p):
-        return Program(seq=p.class_list, line=p.lineno)
+        return Program(seq=p.import_list + p.class_list, line=p.lineno)
+
+    @_("import_statement import_list")
+    def import_list(self, p):
+        return [p[0]] + p[1]
+
+    @_("")
+    def import_list(self, p):
+        return []
+
+    @_("IMPORT import_path ';'")
+    def import_statement(self, p):
+        return Import(import_path=p.import_path)
+
+    @_("import_path '.' ID", "import_path '.' '*'")
+    def import_path(self, p):
+        return f"{p[0]}.{p[2]}"
+
+    @_("ID")
+    def import_path(self, p):
+        return p.ID
     
     @_("java_class")
     def class_list(self, p):
@@ -48,12 +68,24 @@ class JavaParser(Parser):
     def class_list(self, p):
         return p.class_list + [p.java_class]
     
+    @_("visibility static_mod CLASS ID EXTENDS ID '{' member_list '}'")
+    def java_class(self, p):
+        return Class(
+            visibility=p.visibility,
+            static=p.static_mod,
+            name=p.ID0,
+            parent=p.ID1,
+            member_list=p.member_list,
+            line=p.lineno
+        )
+    
     @_("visibility static_mod CLASS ID '{' member_list '}'")
     def java_class(self, p):
         return Class(
             visibility=p.visibility,
             static=p.static_mod,
             name=p.ID,
+            parent=None,
             member_list=p.member_list,
             line=p.lineno
         )
@@ -341,6 +373,10 @@ class JavaParser(Parser):
     @_("THIS '.' ID '(' arg_list ')'")
     def expr(self, p):
         return MethodCall(object="this", method_name=p.ID, params=p.arg_list, line=p.lineno)
+    
+    @_("SUPER '.' ID '(' arg_list ')'")
+    def expr(self, p):
+        return MethodCall(object="super", method_name=p.ID, params=p.arg_list, line=p.lineno)
     
     @_("THIS '.' ID '=' expr")
     def expr(self, p):

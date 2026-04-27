@@ -34,6 +34,7 @@ class Translator():
             VarRef: self.translate_varref,
             MethodCall: self.translate_method_call,
             NewArray:self.translate_new_array,
+            Import: self.translate_import
         }
 
     precedence_binary_op = {
@@ -52,7 +53,8 @@ class Translator():
     def translate_initial(self, node, scope: Scope):
         self.scope = scope
         for java_class in node.seq: 
-            self.scope.register_class(java_class)
+            if isinstance(java_class, Class):
+                self.scope.register_class(java_class)
         return self.translate(node)
     
     def indentation(self, n):
@@ -80,7 +82,10 @@ class Translator():
     def translate_class(self, node):
         self.scope.current_class = node.name
         result = ""
-        result += self.indentation(self.indent_level) + f"class {node.name}:"
+        result += self.indentation(self.indent_level) + f"class {node.name}"
+        if node.parent:
+            result += f"({node.parent})"
+        result += ":"
         self.indent_level += 1
         for member in node.member_list:
             result += self.indentation(self.indent_level) + self.translate(member)
@@ -230,8 +235,9 @@ class Translator():
             name = name[5:]
             return f"self.{name} = {self.translate(node.value)}"
             
-        if not self.scope.is_local(name) and self.scope.is_field(name) and self.scope.locals_stack:
-            name = f"self.{name}"
+        if not self.scope.is_local(name) and self.scope.is_field(name):
+            if self.scope.locals_stack:
+                name = f"self.{name}"
             
         return f"{name} = {self.translate(node.value)}"
     
@@ -241,8 +247,9 @@ class Translator():
             name = name[5:]
             return f"self.{name} = {self.translate(node.value)}"
             
-        if not self.scope.is_local(name) and self.scope.is_field(name) and self.scope.locals_stack:
-            name = f"self.{name}"
+        if not self.scope.is_local(name) and self.scope.is_field(name):
+            if self.scope.locals_stack:
+                name = f"self.{name}"
 
         return f"{name} {node.operator} {self.translate(node.value)}"
     
@@ -327,6 +334,15 @@ class Translator():
     
     def translate_varref(self, node):
         name = node.name
+
+        java_to_python_builtins = {
+            "Math": "math",
+            "Random": "random"
+        }
+        
+        if name in java_to_python_builtins:
+            return java_to_python_builtins[name]
+
         if name.startswith("this."):
             name = name[5:]
             return f"self.{name} = {self.translate(node.value)}"
@@ -348,6 +364,8 @@ class Translator():
                 prefix = self.scope.current_class
             else:
                 prefix = "self"
+        elif node.object == "super":
+            prefix = "super()"
         else:
             prefix = self.translate_varref(VarRef(name=node.object))
 
@@ -369,3 +387,13 @@ class Translator():
                 result += ", "
                 result += f"{self.translate(item)}"
         return result + "]"
+    
+    def translate_import(self, node):
+        imp = ""
+        match node.import_path:
+            case "java.math.*":
+                imp = "math"
+            case "java.util.Random":
+                imp = "random"
+        self.scope.add_local(imp)
+        return f"import {imp}"

@@ -8,7 +8,10 @@ class Scope:
 
     def register_class(self, class_node):
         fields = {m.name for m in class_node.member_list if isinstance(m, Field)}
-        self.all_classes[class_node.name] = fields
+        self.all_classes[class_node.name] = {
+            "fields": fields,
+            "parent": class_node.parent if class_node.parent != '_no_set' else None
+        }
 
     def enter_method(self, method_node):
         self.locals_stack = []
@@ -25,7 +28,18 @@ class Scope:
                 return True
         return False
 
-    def is_field(self, name):
-        if self.current_class in self.all_classes:
-            return name in self.all_classes[self.current_class]
+    def is_field(self, name, c_class=None):
+        if not c_class:
+            c_class = self.current_class
+        
+        if c_class not in self.all_classes:
+            return False
+            
+        if name in self.all_classes[c_class]["fields"]:
+            return True
+            
+        parent_class = self.all_classes[c_class]["parent"]
+        if parent_class:
+            return self.is_field(name, parent_class)
+            
         return False

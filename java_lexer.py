@@ -3,27 +3,27 @@ from sly import Lexer
 class JavaLexer(Lexer):
 
     tokens = {
-        ID, RETURN, CLASS, STATIC,
+        ID, RETURN, CLASS, STATIC, EXTENDS, SUPER,
         ELSE, IF, TRUE, FALSE, AND, OR, EQEQ,
         PLUSEQ, MINUSEQ, TIMESEQ, DIVEQ, MODEQ,
         INT_CONST, FLOAT_CONST, CHAR_CONST, STR_CONST,
         PLUSPLUS, MINUSMINUS,
-        PUBLIC, PRIVATE, VOID, NULL, NEW, THIS,
+        PUBLIC, PRIVATE, VOID, NULL, NEW, THIS, IMPORT,
         LE, LT, GE, GT, NEQ, NOT,
         INLINE_COMMENT, MULTILINE_COMMENT, JAVADOC, STRINGTYPE, CHAR,
         SHORT, INT, LONG, BOOLEAN, FLOAT, DOUBLE,
         FOR, WHILE, DO
     }
 
-    literals = {';', '=', '(', ')', '{', '}', '+', '-', '*', '/', '%', ',', '.', '[', ']'}
+    literals = {';', '=', '(', ')', '{', '}', '+', '-', '*', '/', '%', ',', '.', '[', ']', '*'}
 
     ignore = ' \t'
 
     keywords = {
-                "return", "class", "static",
+                "return", "class", "static", "extends", "super",
                 "else", "if", "true", "false",
                 "short", "int", "long", "boolean", "float", "double", "char", "String",
-                "public", "private", "void", "null", "new", "this",
+                "public", "private", "void", "null", "new", "this", "import",
                 "for", "while", "do"
                 }
     

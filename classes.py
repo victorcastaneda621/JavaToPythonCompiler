@@ -24,10 +24,13 @@ class Class(Node):
     visibility: str = '_no_set'
     static: bool = False
     name: str = '_no_set'
+    parent: str = '_no_set'
     member_list: List = field(default_factory=list)
     def str(self, n):
         res = super().str(n)
         res += f'{" "*n}_class: {self.name}\n'
+        if self.parent:
+            res += f'{" "*n}parent: {self.parent}\n'
         res += ''.join([m.str(n+2) for m in self.member_list])
         return res
 
@@ -325,3 +328,13 @@ class NewArray(Expr):
         res += f'{" "*n}items:\n'
         res += ''.join([i.str(n+2) for i in self.items])
         return res
+    
+@dataclass
+class Import(Expr):
+    import_path: str = '_no_set'
+    def str(self, n):
+        res = super().str(n)
+        res += f'{" "*n}_import\n'
+        res += f'{" "*n}path: {self.import_path}\n'
+        return res
+    
