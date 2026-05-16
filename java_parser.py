@@ -384,7 +384,7 @@ class JavaParser(Parser):
 
     @_("THIS '.' ID PLUSEQ expr", "THIS '.' ID MINUSEQ expr")
     def expr(self, p):
-        return CompoundAssign(name=f"this.{p.ID}", value=p.expr, operator=p[3], line=p.lineno)
+        return CompoundAssign(name=f"{p.ID}", value=p.expr, operator=p[3], line=p.lineno, has_this=True)
     
     @_("expr")
     def arg_list(self, p):

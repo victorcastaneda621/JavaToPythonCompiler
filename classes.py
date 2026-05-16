@@ -173,6 +173,7 @@ class CompoundAssign(Expr):
     name: str = '_no_set'
     operator: str = '_no_set'
     value: Expr = None
+    has_this: bool = False
     def str(self, n):
         res = super().str(n)
         res += f'{" "*n}_cassign: {self.name}\n'

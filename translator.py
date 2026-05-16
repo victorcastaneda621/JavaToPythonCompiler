@@ -243,8 +243,7 @@ class Translator():
     
     def translate_compound_assign(self, node):
         name = node.name
-        if name.startswith("this."):
-            name = name[5:]
+        if node.has_this:
             return f"self.{name} = {self.translate(node.value)}"
             
         if not self.scope.is_local(name) and self.scope.is_field(name):

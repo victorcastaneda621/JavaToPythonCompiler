@@ -9,7 +9,7 @@
 #2 '='
 #2 ID MAX_ITER
 #2 ';'
-#3 FOR
+#3 ID FOR
 #3 '('
 #3 INT
 #3 ID i
@@ -17,8 +17,7 @@
 #3 INT_CONST 0
 #3 ';'
 #3 ID i
-#3 LT
-#3 '='
+#3 LE
 #3 ID MAX_ITER
 #3 ';'
 #3 ID i
@@ -72,8 +71,7 @@
 #14 WHILE
 #14 '('
 #14 ID res
-#14 GT
-#14 '='
+#14 GE
 #14 ID MAX_ITER
 #14 ')'
 #14 ';'
