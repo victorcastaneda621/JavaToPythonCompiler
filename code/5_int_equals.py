@@ -1,9 +1,0 @@
-class Eq:
-    x = 5
-    y = 4
-    
-    def func(self):
-        if self.x == 5:
-            return self.x
-        if self.x == self.y:
-            return self.y

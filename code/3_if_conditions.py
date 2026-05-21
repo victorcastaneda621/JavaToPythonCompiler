@@ -1,8 +1,0 @@
-class AClass:
-    
-    @staticmethod
-    def doSomething():
-        if True:
-            return False
-        else:
-            return True
